@@ -9,13 +9,18 @@ export const EMERGENCY = process.env.EMERGENCY_NUMBER || 'your local emergency n
 export const APP_LANGUAGES = ['English', 'French', 'Lingala', 'Kikongo (Kikongo ya Leta)', 'Tshiluba', 'Swahili'];
 const LESS_RESOURCED = ['Lingala', 'Kikongo (Kikongo ya Leta)', 'Tshiluba'];
 
-export function buildSystemPrompt(screeningContext, { voice = false, language = null } = {}) {
+// Used when the question comes with passages from official documents (RAG).
+const RETRIEVAL_RULES = `- The user's latest message comes with search results: passages from official WHO and CDC documents. Answer from these passages and cite them; citations are shown to the user as links.
+- Do not add facts, numbers, names or dates that are not in the passages. If the passages do not answer the question, say plainly that you could not find it in the official documents, then give only the general safety advice below.
+- If passages disagree or seem outdated, say so briefly and prefer the most recent one. The safety rules below always come first, even when no passage matches.`;
+
+export function buildSystemPrompt(screeningContext, { voice = false, language = null, retrieval = false, confident = true } = {}) {
   let prompt = `You are the health-information assistant inside "Ebola Guard", a public-health app that helps people understand Ebola disease and decide when to seek care.
 
 WHAT YOU DO
 - Explain Ebola clearly: symptoms, how it spreads and does not spread, incubation period (2-21 days), prevention, safe care of sick people, safe burials, myths, vaccines and treatment centres in general terms.
 - Help the user think about whether they may have had an exposure and what the official guidance says to do next.
-- Base answers on WHO and CDC guidance. If you are not sure, say so.
+${retrieval ? RETRIEVAL_RULES : '- Base answers on WHO and CDC guidance. If you are not sure, say so.'}
 
 SAFETY RULES (always follow)
 1. You cannot diagnose Ebola or rule it out. Only a laboratory test can. Never say "you have Ebola" or "you don't have Ebola".
@@ -31,6 +36,12 @@ STYLE
 - Short, plain sentences. Most answers under 150 words. Use simple numbered steps for actions.
 - Be calm and kind; people may be frightened.`;
 
+  if (retrieval && !confident) {
+    prompt += `
+
+NOTE: the search found no passage that clearly matches this question. Unless the question is a greeting or off-topic, say that the official documents in the app do not cover it, and suggest asking a health worker or calling ${HOTLINE}.`;
+  }
+
   if (language && APP_LANGUAGES.includes(language)) {
     prompt += `
 
@@ -45,7 +56,7 @@ The user chose ${language} in the app. Reply in ${language}, using simple everyd
     prompt += `
 
 VOICE MODE
-Your answer will be read aloud by the phone. Use at most 80 words, in short spoken sentences. No lists, bullet points, headings, symbols, emojis or links. Say numbers as words where natural. If the user describes exposure plus symptoms, start with what to do right now.`;
+Your answer will be read aloud by the phone. Use at most 80 words, in short spoken sentences. No lists, bullet points, headings, symbols, emojis or links. Say numbers as words where natural.${retrieval ? ' Mention the source in words (for example "according to the World Health Organization").' : ''} If the user describes exposure plus symptoms, start with what to do right now.`;
   }
 
   if (screeningContext) {

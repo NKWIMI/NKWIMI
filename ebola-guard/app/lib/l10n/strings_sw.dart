@@ -120,6 +120,7 @@ const Map<String, String> stringsSw = {
   'chat_report': 'Ripoti jibu hili',
   'chat_report_sub': 'Si sahihi, hatari au la kuudhi',
   'chat_reported': 'Asante. Jibu limeripotiwa.',
+  'chat_sources': 'Vyanzo (nyaraka rasmi)',
   'err_timeout': 'Msaidizi amechelewa kujibu. Tafadhali jaribu tena.',
   'err_offline': 'Imeshindwa kumfikia msaidizi. Angalia intaneti yako na ujaribu tena.',
   'err_generic': 'Hitilafu imetokea ({n}).',

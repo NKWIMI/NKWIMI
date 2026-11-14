@@ -122,6 +122,7 @@ const Map<String, String> stringsLua = {
   'chat_report': 'Manyisha tshilema mu diandamuna edi',
   'chat_report_sub': 'Dia dishima, dia njiwu anyi dibi',
   'chat_reported': 'Tuasakidila. Diandamuna diatumibua.',
+  'chat_sources': 'Muaba udi malu afumina (mikanda ya mbulamatadi)',
   'err_timeout': 'Muambuluishi mulepele bua kuandamuna. Teta kabidi.',
   'err_offline': 'Katuena mua kupeta muambuluishi to. Tangila internet webe ne teta kabidi.',
   'err_generic': 'Bualu kampanda buenzeke bibi ({n}).',

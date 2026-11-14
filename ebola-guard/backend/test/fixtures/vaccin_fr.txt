@@ -1,0 +1,11 @@
+# Vaccin et traitement (document de test)
+
+DOCUMENT DE TEST écrit pour les tests automatiques. Ce n'est pas un texte officiel d'une organisation de santé.
+
+# Le vaccin Ervebo
+
+Dans ce document de test, le vaccin Ervebo protège contre l'espèce Zaïre du virus. Il est donné en une seule injection aux personnes les plus exposées pendant une épidémie, comme les contacts des malades et les agents de santé.
+
+# Traitement
+
+Il n'existe aucun remède à base de plantes ou de sel contre la maladie. Les soins en centre de traitement, avec réhydratation et anticorps monoclonaux, améliorent la survie quand ils commencent tôt.

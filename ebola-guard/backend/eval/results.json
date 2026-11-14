@@ -1,0 +1,741 @@
+{
+  "at": "2026-11-14T09:46:45.569Z",
+  "search": "hybrid",
+  "summary": {
+    "questions": 40,
+    "hitAt5": "100% (34/34)",
+    "hitAt1": "94% (32/34)",
+    "mrr": 0.966,
+    "noAnswerDetected": "67% (2/3)",
+    "alertsCaught": "100% (4/4)",
+    "falseAlerts": "0% (0/36)",
+    "hitByLanguage": {
+      "en": "100% (23/23)",
+      "fr": "100% (7/7)",
+      "ln": "100% (2/2)",
+      "sw": "100% (2/2)"
+    }
+  },
+  "rows": [
+    {
+      "id": "en-symptoms",
+      "lang": "en",
+      "question": "What are the first symptoms of Ebola?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-symptoms",
+        "cdc-symptoms",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-incubation",
+      "lang": "en",
+      "question": "How long after exposure do symptoms appear?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-symptoms",
+        "cdc-about",
+        "cdc-symptoms"
+      ]
+    },
+    {
+      "id": "en-wet-symptoms",
+      "lang": "en",
+      "question": "What symptoms come later in the illness?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-symptoms",
+        "cdc-about",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-contagious-before",
+      "lang": "en",
+      "question": "Can someone spread Ebola before they feel sick?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-spread",
+        "cdc-spread",
+        "cdc-about"
+      ]
+    },
+    {
+      "id": "en-how-spread",
+      "lang": "en",
+      "question": "How does Ebola spread from person to person?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-spread",
+        "cdc-about",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "en-airborne",
+      "lang": "en",
+      "question": "Is Ebola airborne like the flu?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-about",
+        "cdc-about",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "en-mosquito",
+      "lang": "en",
+      "question": "Can mosquitoes transmit Ebola?",
+      "hit": true,
+      "rank": 3,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "cdc-vaccine",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "en-bats",
+      "lang": "en",
+      "question": "Which animals carry the Ebola virus?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-spread",
+        "cdc-spread",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "en-survivors",
+      "lang": "en",
+      "question": "Can a survivor still pass the virus to a partner?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-spread",
+        "who-factsheet-en",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "en-burial",
+      "lang": "en",
+      "question": "How should people who died of Ebola be buried?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "cdc-about",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-health-workers",
+      "lang": "en",
+      "question": "Why do health workers get infected?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-en",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "en-vaccine",
+      "lang": "en",
+      "question": "Is there a vaccine against Ebola?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-vaccine",
+        "cdc-vaccine",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "en-ervebo-who",
+      "lang": "en",
+      "question": "Who should receive the Ervebo vaccine?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-fr",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "en-vaccine-side",
+      "lang": "en",
+      "question": "What are the side effects of the Ebola vaccine?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-vaccine",
+        "cdc-vaccine",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-treatment",
+      "lang": "en",
+      "question": "What treatments exist for Ebola?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-en",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-sudan-virus",
+      "lang": "en",
+      "question": "Is there a vaccine for Sudan virus disease?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "cdc-about",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-diagnosis",
+      "lang": "en",
+      "question": "How do doctors test for Ebola?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-en",
+        "cdc-about"
+      ]
+    },
+    {
+      "id": "en-malaria",
+      "lang": "en",
+      "question": "Can Ebola be confused with malaria?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-en",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "en-history",
+      "lang": "en",
+      "question": "When and where was Ebola first discovered?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-about",
+        "who-factsheet-en",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "en-return-travel",
+      "lang": "en",
+      "question": "I came back from an outbreak area, what should I monitor?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-about",
+        "who-factsheet-en",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "en-myth-saltwater",
+      "lang": "en",
+      "question": "Does bathing in salt water cure Ebola?",
+      "hit": true,
+      "rank": 2,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-spread",
+        "who-factsheet-en",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "fr-symptomes",
+      "lang": "fr",
+      "question": "Quels sont les symptômes de la maladie à virus Ebola ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "fr-transmission",
+      "lang": "fr",
+      "question": "Comment se transmet Ebola ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-spread",
+        "cdc-spread",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "fr-incubation",
+      "lang": "fr",
+      "question": "Quelle est la durée d'incubation ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-en",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "fr-vaccin",
+      "lang": "fr",
+      "question": "Existe-t-il un vaccin contre Ebola ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "fr-traitement",
+      "lang": "fr",
+      "question": "Quels traitements sont recommandés par l'OMS ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "fr-enterrement",
+      "lang": "fr",
+      "question": "Comment organiser un enterrement sans risque ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "fr-chauves-souris",
+      "lang": "fr",
+      "question": "Les chauves-souris transmettent-elles le virus ?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "ln-symptomes",
+      "lang": "ln",
+      "question": "Bilembo ya maladi ya Ebola ezali nini?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-en",
+        "cdc-about"
+      ]
+    },
+    {
+      "id": "ln-vaccin",
+      "lang": "ln",
+      "question": "Vaccin ya Ebola ezali?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "cdc-vaccine",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "sw-dalili",
+      "lang": "sw",
+      "question": "Dalili za Ebola ni zipi?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-fr",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "sw-chanjo",
+      "lang": "sw",
+      "question": "Je, kuna chanjo ya Ebola?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-en",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "off-football",
+      "lang": "en",
+      "question": "Who won the football world cup?",
+      "hit": null,
+      "rank": null,
+      "confident": false,
+      "answerable": false,
+      "noAnswerOk": true,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "who-factsheet-en",
+        "who-factsheet-en"
+      ]
+    },
+    {
+      "id": "off-recipe",
+      "lang": "en",
+      "question": "Give me a recipe for chocolate cake",
+      "hit": null,
+      "rank": null,
+      "confident": false,
+      "answerable": false,
+      "noAnswerOk": true,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "cdc-vaccine",
+        "cdc-vaccine",
+        "cdc-spread"
+      ]
+    },
+    {
+      "id": "off-crypto",
+      "lang": "fr",
+      "question": "Quel est le prix du bitcoin aujourd'hui ?",
+      "hit": null,
+      "rank": null,
+      "confident": true,
+      "answerable": false,
+      "noAnswerOk": false,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "alert-urgent-en",
+      "lang": "en",
+      "question": "I cared for my brother who had Ebola and now I have a fever and headache",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": "urgent",
+      "alertExpected": "urgent",
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "cdc-vaccine",
+        "cdc-about"
+      ]
+    },
+    {
+      "id": "alert-urgent-fr",
+      "lang": "fr",
+      "question": "J'ai lavé le corps de ma tante décédée et j'ai de la fièvre depuis hier",
+      "hit": null,
+      "rank": null,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": "urgent",
+      "alertExpected": "urgent",
+      "alertOk": true,
+      "top": [
+        "who-factsheet-fr",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "alert-emergency-en",
+      "lang": "en",
+      "question": "I am bleeding from my nose and I feel confused",
+      "hit": null,
+      "rank": null,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": "emergency",
+      "alertExpected": "emergency",
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "cdc-spread",
+        "cdc-vaccine"
+      ]
+    },
+    {
+      "id": "alert-urgent-sw",
+      "lang": "sw",
+      "question": "Nina homa na nilihudhuria mazishi ya mgonjwa wa Ebola",
+      "hit": null,
+      "rank": null,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": "urgent",
+      "alertExpected": "urgent",
+      "alertOk": true,
+      "top": [
+        "cdc-about",
+        "who-factsheet-fr",
+        "who-factsheet-fr"
+      ]
+    },
+    {
+      "id": "calm-bleeding-info",
+      "lang": "en",
+      "question": "Is bleeding always a symptom of Ebola?",
+      "hit": true,
+      "rank": 1,
+      "confident": true,
+      "answerable": true,
+      "noAnswerOk": null,
+      "alert": null,
+      "alertExpected": null,
+      "alertOk": true,
+      "top": [
+        "who-factsheet-en",
+        "cdc-about",
+        "cdc-vaccine"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 name: ebola_guard
 description: Ebola symptom & exposure screening with an AI health-information assistant.
 publish_to: "none"
-version: 1.1.0+3
+version: 1.2.0+4
 
 environment:
   sdk: ">=3.6.0 <4.0.0"   # Flutter 3.27 or newer

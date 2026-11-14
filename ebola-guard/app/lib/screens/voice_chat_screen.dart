@@ -4,6 +4,7 @@ import '../l10n/l10n.dart';
 import '../models/chat_message.dart';
 import '../services/chat_service.dart';
 import '../services/voice_service.dart';
+import '../widgets/answer_extras.dart';
 import '../widgets/emergency_banner.dart';
 
 enum _VoiceState { idle, listening, thinking, speaking }
@@ -140,18 +141,23 @@ class _VoiceChatScreenState extends State<VoiceChatScreen> {
     _scrollToEnd();
 
     try {
-      final reply = await _chat.send(
+      final reply = await _chat.ask(
         _messages,
         screeningContext: widget.screeningContext,
         mode: 'voice',
       );
       if (!mounted) return;
       setState(() {
-        _messages.add(ChatMessage(role: ChatRole.assistant, text: reply));
+        _messages.add(ChatMessage(
+          role: ChatRole.assistant,
+          text: reply.text,
+          sources: reply.sources,
+          alertLevel: reply.alertLevel,
+        ));
         _state = _VoiceState.speaking;
       });
       _scrollToEnd();
-      await _voice.speak(reply, localeId: _localeId);
+      await _voice.speak(reply.text, localeId: _localeId);
     } on ChatException catch (e) {
       if (!mounted) return;
       setState(() => _messages.removeLast());
@@ -333,9 +339,11 @@ class _VoiceBubble extends StatelessWidget {
           color: mine ? scheme.primary : scheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(18),
         ),
-        child: Text(message.text,
-            style:
-                TextStyle(color: mine ? scheme.onPrimary : scheme.onSurface)),
+        child: mine
+            ? Text(message.text, style: TextStyle(color: scheme.onPrimary))
+            : AnswerBody(
+                message: message,
+                textStyle: TextStyle(color: scheme.onSurface)),
       ),
     );
   }

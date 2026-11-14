@@ -1,0 +1,6 @@
+[
+  { "id": "test-symptoms", "org": "TEST", "title": "Signs and symptoms (test)", "url": "https://example.org/test/symptoms", "language": "en", "license": "test fixture", "file": "symptoms.html" },
+  { "id": "test-spread", "org": "TEST", "title": "How it spreads (test)", "url": "https://example.org/test/spread", "language": "en", "license": "test fixture", "file": "spread.html" },
+  { "id": "test-vaccin-fr", "org": "TEST", "title": "Vaccin et traitement (test)", "url": "https://example.org/test/vaccin", "language": "fr", "license": "test fixture", "file": "vaccin_fr.txt" },
+  { "id": "test-missing", "org": "TEST", "title": "Missing file (test)", "url": "https://example.org/test/missing", "language": "en", "license": "test fixture", "file": "does-not-exist.html" }
+]

@@ -122,6 +122,7 @@ const Map<String, String> stringsKg = {
   'chat_report': 'Zabisa foti na mvutu yai',
   'chat_report_sub': 'Ya luvunu, ya kigonsa to ya mbi',
   'chat_reported': 'Matondo. Mvutu me tindama.',
+  'chat_sources': 'Kisika nsangu me katuka (mikanda ya leta)',
   'err_timeout': 'Musadisi me zinga na kuvutula. Meka diaka.',
   'err_offline': 'Beto me kuka ve kukutana ti musadisi. Tala internet na nge mpi meka diaka.',
   'err_generic': 'Diambu mosi me salama mbi ({n}).',

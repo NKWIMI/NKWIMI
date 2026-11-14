@@ -121,6 +121,7 @@ const Map<String, String> stringsLn = {
   'chat_report': 'Yebisa libunga na eyano oyo',
   'chat_report_sub': 'Ya lokuta, ya likama to ya mabe',
   'chat_reported': 'Matondi. Eyano etindami.',
+  'chat_sources': 'Esika sango euti (mikanda ya leta)',
   'err_timeout': 'Mosalisi aumeli koyanola. Meka lisusu.',
   'err_offline': 'Tokoki kokutana na mosalisi te. Tala internet na yo mpe meka lisusu.',
   'err_generic': 'Likambo moko esalemi mabe ({n}).',

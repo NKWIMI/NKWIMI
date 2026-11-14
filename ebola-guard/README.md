@@ -3,7 +3,7 @@
 A cross-platform (Android + iOS) Flutter app that offers:
 
 1. **Symptom & exposure screening** — offline, rule-based checklist following the CDC/WHO logic (exposure in the last 21 days + compatible symptoms → isolate and call for help).
-2. **AI health-information assistant** — chat backed by Claude, with strict safety instructions (no diagnosis, always escalates red flags, replies in the user's language, can be reported by the user).
+2. **AI health-information assistant with official sources (RAG)** — before answering, the backend searches a library of official WHO and CDC documents and Claude answers from those passages, with numbered sources the user can open. Strict safety instructions (no diagnosis, always escalates red flags, replies in the user's language, can be reported by the user), plus a rule-based alert when someone describes their own danger signs.
 3. **Voice assistant** — speak your question and hear the answer, in the language you choose (uses the phone's free built-in speech engines).
 4. **Learn about Ebola** — 7 prevention lessons, facts & myths (offline), plus videos (WHO, Global Health Media, SAWBO) and trusted links.
 5. **Emergency contacts** — one-tap call to the hotline / emergency number.
@@ -26,7 +26,7 @@ ebola-guard/
 ```
 
 ```
-Phone app ──HTTPS──▶ your backend (/api/chat) ──▶ Claude API
+Phone app ──HTTPS──▶ your backend (/api/chat) ──▶ search WHO/CDC library ──▶ Claude API (answer + citations)
    │ offline: screening + info + call buttons work without internet
 ```
 
@@ -49,12 +49,18 @@ Then run `flutter doctor` and fix anything it reports.
 ```bash
 cd backend
 npm install
-npm test                       # 6 tests should pass
+npm test                       # 46 tests should pass
+npm run ingest                 # builds the WHO/CDC document library (first time: downloads ~120 MB model)
+npm run eval                   # optional: measures search quality on 40 test questions
 export ANTHROPIC_API_KEY=sk-ant-...   # Windows PowerShell: $env:ANTHROPIC_API_KEY="sk-ant-..."
 npm start                      # → http://localhost:8080
 ```
 
 Check: open http://localhost:8080/health → `{"ok":true,"ai":true}`.
+
+Without an API key the assistant still works in **search-only mode**: it shows the most relevant official passages with their sources. Open http://localhost:8080 for a web version of the assistant and its document library.
+
+**How the RAG works** (files in `backend/src/`): `npm run ingest` downloads the documents listed in `backend/data/sources.json`, keeps their main text, cuts it into ~220-word passages and computes multilingual embeddings (`Xenova/multilingual-e5-small`, runs locally, free). For each question, a hybrid search (BM25 keywords + embeddings) picks the 5 best passages, which go to Claude as `search_result` blocks with citations turned on. The app shows the cited documents under the answer. To add a document, add it to `sources.json` and run `npm run ingest` again.
 
 ## Step 3 — Run the app
 

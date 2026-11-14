@@ -120,6 +120,7 @@ const Map<String, String> stringsFr = {
   'chat_report': 'Signaler cette réponse',
   'chat_report_sub': 'Fausse, dangereuse ou choquante',
   'chat_reported': 'Merci. La réponse a été signalée.',
+  'chat_sources': 'Sources (documents officiels)',
   'err_timeout': "L'assistant a mis trop de temps à répondre. Réessayez.",
   'err_offline': "Impossible de joindre l'assistant. Vérifiez votre connexion Internet et réessayez.",
   'err_generic': "Une erreur s'est produite ({n}).",

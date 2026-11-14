@@ -1,0 +1,11 @@
+[
+  { "id": "fx-symptoms", "lang": "en", "question": "What are the first symptoms?", "expect": { "sources": ["test-symptoms"] } },
+  { "id": "fx-incubation", "lang": "en", "question": "How many days after contact do symptoms appear?", "expect": { "sources": ["test-symptoms"] } },
+  { "id": "fx-mosquito", "lang": "en", "question": "Can mosquitoes spread it?", "expect": { "sources": ["test-spread"] } },
+  { "id": "fx-burial", "lang": "en", "question": "Is it safe to wash the body of a relative who died?", "expect": { "sources": ["test-spread"] } },
+  { "id": "fx-vaccin-fr", "lang": "fr", "question": "Qui peut recevoir le vaccin Ervebo ?", "expect": { "sources": ["test-vaccin-fr"] } },
+  { "id": "fx-fievre-fr", "lang": "fr", "question": "Quels sont les signes de fièvre et les symptômes ?", "expect": { "sources": ["test-symptoms"] } },
+  { "id": "fx-offtopic", "lang": "en", "question": "Who won the football world cup?", "expect": { "answerable": false } },
+  { "id": "fx-urgent", "lang": "en", "question": "I cared for my sick uncle who had Ebola and now I have a fever", "expect": { "alert": "urgent" } },
+  { "id": "fx-emergency-fr", "lang": "fr", "question": "Je saigne du nez et j'ai de la fièvre", "expect": { "alert": "emergency" } }
+]

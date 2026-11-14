@@ -127,6 +127,7 @@ const Map<String, String> stringsEn = {
   'chat_report': 'Report this answer',
   'chat_report_sub': 'Wrong, harmful or offensive',
   'chat_reported': 'Thank you. The answer was reported.',
+  'chat_sources': 'Sources (official documents)',
   'err_timeout': 'The assistant took too long to answer. Please try again.',
   'err_offline': 'Cannot reach the assistant. Check your internet connection and try again.',
   'err_generic': 'Something went wrong ({n}).',

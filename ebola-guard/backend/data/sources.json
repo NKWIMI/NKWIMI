@@ -1,0 +1,50 @@
+[
+  {
+    "id": "who-factsheet-en",
+    "org": "WHO",
+    "title": "Ebola disease (fact sheet)",
+    "url": "https://www.who.int/news-room/fact-sheets/detail/ebola-disease",
+    "language": "en",
+    "license": "© World Health Organization. Reuse for non-commercial purposes with attribution; check https://www.who.int/about/policies/publishing/copyright"
+  },
+  {
+    "id": "who-factsheet-fr",
+    "org": "OMS",
+    "title": "Maladie à virus Ebola (aide-mémoire)",
+    "url": "https://www.who.int/fr/news-room/fact-sheets/detail/ebola-disease",
+    "language": "fr",
+    "license": "© Organisation mondiale de la Santé. Réutilisation non commerciale avec attribution; voir https://www.who.int/fr/about/policies/publishing/copyright"
+  },
+  {
+    "id": "cdc-about",
+    "org": "CDC",
+    "title": "Ebola Disease Basics",
+    "url": "https://www.cdc.gov/ebola/about/index.html",
+    "language": "en",
+    "license": "U.S. government work (public domain). Credit CDC; no endorsement implied."
+  },
+  {
+    "id": "cdc-symptoms",
+    "org": "CDC",
+    "title": "Signs and Symptoms of Ebola Disease",
+    "url": "https://www.cdc.gov/ebola/signs-symptoms/index.html",
+    "language": "en",
+    "license": "U.S. government work (public domain). Credit CDC; no endorsement implied."
+  },
+  {
+    "id": "cdc-spread",
+    "org": "CDC",
+    "title": "How Ebola Disease Spreads",
+    "url": "https://www.cdc.gov/ebola/causes/index.html",
+    "language": "en",
+    "license": "U.S. government work (public domain). Credit CDC; no endorsement implied."
+  },
+  {
+    "id": "cdc-vaccine",
+    "org": "CDC",
+    "title": "Ebola Vaccine: What You Need to Know (VIS)",
+    "url": "https://www.cdc.gov/vaccines/hcp/current-vis/ebola.html",
+    "language": "en",
+    "license": "U.S. government work (public domain). Credit CDC; no endorsement implied."
+  }
+]

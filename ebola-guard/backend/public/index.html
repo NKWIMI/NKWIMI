@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ebola Guard · Answers from official sources</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🛡️%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f6f3; --surface: #fff; --surface-2: #efeee9; --line: #e2e0d9;
+    --text: #111; --text-2: #4f4e4a; --muted: #7a7974;
+    --brand: #0f6b5c; --brand-soft: #e3f1ee; --brand-ink: #fff;
+    --user: #0f6b5c; --user-ink: #fff;
+    --critical: #d03b3b; --critical-soft: #fbe7e7; --warning: #fab219; --warning-soft: #fff4dc;
+    --focus: #2a78d6; --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #121211; --surface: #1a1a19; --surface-2: #252523; --line: #34342f;
+      --text: #f0efec; --text-2: #c3c2b7; --muted: #92918a;
+      --brand: #3fb59e; --brand-soft: #173a33; --brand-ink: #0b0b0b; --user: #2d8f7c; --user-ink: #fff;
+      --critical-soft: #3a1b1b; --warning-soft: #3a2f12;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.5; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  header { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
+  .bar { max-width: 860px; margin: 0 auto; padding: 0 20px; height: 60px; display: flex; align-items: center; gap: 18px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
+  .brand .mark { width: 30px; height: 30px; border-radius: 8px; background: var(--brand); display: grid; place-items: center; font-size: 16px; }
+  .tabs { display: flex; gap: 4px; flex: 1; }
+  .tabs button { border: 0; background: none; font: inherit; font-size: 14px; font-weight: 500; color: var(--text-2); padding: 7px 12px; border-radius: 8px; cursor: pointer; }
+  .tabs button.active { background: var(--brand-soft); color: var(--brand); }
+  .pill { font-size: 12.5px; color: var(--text-2); display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .pill.ai .dot { background: #0ca30c; }
+  .pill.retrieval .dot { background: var(--warning); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 24px 20px 160px; }
+  .intro h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: -.02em; }
+  .intro p { margin: 0 0 18px; color: var(--text-2); }
+  .notice { font-size: 13px; color: var(--text-2); background: var(--surface-2); border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; }
+
+  .suggest { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .suggest button { border: 1px solid var(--line); background: var(--surface); color: var(--text); font: inherit; font-size: 13.5px; padding: 7px 12px; border-radius: 999px; cursor: pointer; }
+  .suggest button:hover { border-color: var(--brand); }
+
+  .msg { display: flex; margin: 14px 0; }
+  .msg.user { justify-content: flex-end; }
+  .bubble { max-width: 85%; padding: 12px 16px; border-radius: var(--radius); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .user .bubble { background: var(--user); color: var(--user-ink); border-bottom-right-radius: 4px; }
+  .assistant .bubble { background: var(--surface); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+  .bubble sup a { color: var(--brand); font-weight: 700; text-decoration: none; font-size: 11px; padding: 0 1px; }
+  .typing { color: var(--muted); font-style: italic; }
+
+  .alert { border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 14px; white-space: normal; }
+  .alert.emergency { background: var(--critical-soft); }
+  .alert.urgent { background: var(--warning-soft); }
+  .alert b::before { margin-right: 6px; }
+  .alert.emergency b::before { content: "⚠"; color: var(--critical); }
+  .alert.urgent b::before { content: "!"; display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: var(--warning); color: #111; font-size: 11px; }
+
+  .sources { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); white-space: normal; }
+  .sources .label { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+  .src { display: flex; gap: 8px; align-items: baseline; font-size: 13.5px; margin: 4px 0; text-decoration: none; }
+  .src .n { flex: none; width: 20px; height: 20px; border-radius: 6px; background: var(--brand-soft); color: var(--brand); font-weight: 700; font-size: 11.5px; display: grid; place-items: center; }
+  .src .org { font-weight: 600; }
+  .src:hover .t { text-decoration: underline; }
+  .src .sec { color: var(--muted); }
+  .error { color: var(--critical); }
+
+  .composer { position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, var(--bg) 30%); padding: 26px 20px 18px; }
+  .composer form { max-width: 860px; margin: 0 auto; display: flex; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px; box-shadow: 0 4px 18px rgba(0,0,0,.06); }
+  .composer select { border: 0; background: var(--surface-2); color: var(--text); border-radius: 9px; font: inherit; font-size: 13.5px; padding: 0 8px; }
+  .composer input { flex: 1; border: 0; background: transparent; color: var(--text); font: inherit; padding: 8px; min-width: 0; }
+  .composer input:focus { outline: none; }
+  .composer button { border: 0; background: var(--brand); color: var(--brand-ink); font: inherit; font-weight: 600; padding: 0 18px; border-radius: 10px; cursor: pointer; }
+  .composer button:disabled { opacity: .5; }
+  .composer .fine { max-width: 860px; margin: 8px auto 0; font-size: 12px; color: var(--muted); text-align: center; }
+
+  .library h2 { font-size: 18px; margin: 0 0 6px; }
+  .library p.lead { color: var(--text-2); margin: 0 0 16px; }
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 14px; }
+  th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .ok { color: #0a8a0a; font-weight: 600; } .failed { color: var(--critical); font-weight: 600; }
+  .lic { font-size: 12px; color: var(--muted); }
+  @media (max-width: 600px) { .pill .label, .brand .name { display: none; } .bubble { max-width: 95%; } }
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand"><span class="mark">🛡️</span><span class="name">Ebola Guard</span></div>
+  <nav class="tabs"><button class="active" data-tab="ask">Ask</button><button data-tab="library">Library</button><a class="tabs-link" href="https://github.com/NKWIMI" style="display:none"></a></nav>
+  <div class="pill" id="pill"><span class="dot"></span><span class="label">Connecting…</span></div>
+</div></header>
+
+<main>
+  <section id="tab-ask">
+    <div class="intro">
+      <h1>Ask about Ebola</h1>
+      <p>Answers come from official WHO and CDC documents, with the sources linked under each answer.</p>
+    </div>
+    <div class="notice">This is health information, not a diagnosis. Only a laboratory test can confirm Ebola. If you have a fever after contact with a sick or dead person, separate from others and call your health hotline now.</div>
+    <div class="suggest" id="suggest">
+      <button>What are the first symptoms of Ebola?</button>
+      <button>Can mosquitoes spread Ebola?</button>
+      <button>Who can get the Ebola vaccine?</button>
+      <button>Comment se transmet Ebola ?</button>
+      <button>Is it safe to wash the body of someone who died of Ebola?</button>
+    </div>
+    <div id="chat" aria-live="polite"></div>
+  </section>
+
+  <section id="tab-library" class="library" hidden>
+    <h2>Document library</h2>
+    <p class="lead" id="lib-lead">The assistant only answers from these official documents.</p>
+    <div id="lib"></div>
+  </section>
+</main>
+
+<div class="composer" id="composer">
+  <form id="form">
+    <select id="lang" aria-label="Answer language">
+      <option value="English">English</option><option value="French">Français</option><option value="Lingala">Lingala</option>
+      <option value="Swahili">Kiswahili</option><option value="Kikongo (Kikongo ya Leta)">Kikongo</option><option value="Tshiluba">Tshiluba</option>
+    </select>
+    <input id="q" autocomplete="off" placeholder="Type your question…" maxlength="2000" aria-label="Your question">
+    <button id="send">Ask</button>
+  </form>
+  <div class="fine">Ebola Guard · retrieval-augmented answers with citations · not a medical device</div>
+</div>
+
+<script>
+const chat = document.getElementById('chat'), form = document.getElementById('form'), input = document.getElementById('q');
+const send = document.getElementById('send'), lang = document.getElementById('lang');
+const history = [];
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const ALERTS = {
+  emergency: { title: 'Danger sign', text: 'Bleeding, confusion, fainting or difficulty breathing need emergency care now. Call your emergency number.' },
+  urgent: { title: 'Possible exposure with symptoms', text: 'Separate from other people and call your health hotline now. Call before going to a clinic, and do not take public transport.' },
+};
+
+fetch('/health').then((r) => r.json()).then((h) => {
+  const pill = document.getElementById('pill');
+  pill.classList.add(h.ai ? 'ai' : 'retrieval');
+  pill.querySelector('.label').textContent = h.ai
+    ? `AI answers · ${h.documents} documents`
+    : `Search only (no AI key) · ${h.documents} documents`;
+}).catch(() => {});
+
+document.querySelectorAll('.tabs button').forEach((b) => b.addEventListener('click', () => {
+  document.querySelectorAll('.tabs button').forEach((x) => x.classList.toggle('active', x === b));
+  document.getElementById('tab-ask').hidden = b.dataset.tab !== 'ask';
+  document.getElementById('tab-library').hidden = b.dataset.tab !== 'library';
+  document.getElementById('composer').hidden = b.dataset.tab !== 'ask';
+  if (b.dataset.tab === 'library') loadLibrary();
+}));
+
+document.getElementById('suggest').addEventListener('click', (e) => {
+  if (e.target.tagName === 'BUTTON') { input.value = e.target.textContent; form.requestSubmit(); }
+});
+
+function addMessage(role, html) {
+  const el = document.createElement('div');
+  el.className = `msg ${role}`;
+  el.innerHTML = `<div class="bubble">${html}</div>`;
+  chat.appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return el.querySelector('.bubble');
+}
+
+// "[2]" markers in the reply become small links to the matching source.
+function renderReply(text, sources, msgId) {
+  const known = new Set(sources.map((s) => s.n));
+  return esc(text).replace(/\[(\d+)\]/g, (m, n) => known.has(+n) ? `<sup><a href="#${msgId}-src-${n}">[${n}]</a></sup>` : m);
+}
+
+function renderSources(sources, msgId) {
+  if (!sources.length) return '';
+  return `<div class="sources"><div class="label">Sources</div>${sources.map((s) => `
+    <a class="src" id="${msgId}-src-${s.n}" href="${esc(s.url)}" target="_blank" rel="noopener">
+      <span class="n">${s.n}</span>
+      <span><span class="org">${esc(s.org)}</span> · <span class="t">${esc(s.title)}</span>${s.section ? ` <span class="sec">› ${esc(s.section)}</span>` : ''}</span>
+    </a>`).join('')}</div>`;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  document.getElementById('suggest').hidden = true;
+  input.value = '';
+  addMessage('user', esc(text));
+  history.push({ role: 'user', content: text });
+  const bubble = addMessage('assistant', '<span class="typing">Searching the official documents…</span>');
+  send.disabled = true;
+  try {
+    const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history, language: lang.value }) });
+    const data = await res.json();
+    if (!res.ok) { bubble.innerHTML = `<span class="error">${esc(data.error || 'Something went wrong.')}</span>`; history.pop(); return; }
+    const id = `m${history.length}`;
+    const alert = data.alert ? `<div class="alert ${data.alert.level}"><b>${ALERTS[data.alert.level].title}.</b> ${ALERTS[data.alert.level].text}</div>` : '';
+    bubble.innerHTML = alert + renderReply(data.reply, data.sources || [], id) + renderSources(data.sources || [], id);
+    history.push({ role: 'assistant', content: data.reply });
+  } catch {
+    bubble.innerHTML = '<span class="error">Cannot reach the server.</span>';
+    history.pop();
+  } finally {
+    send.disabled = false;
+    input.focus();
+  }
+});
+
+let libraryLoaded = false;
+async function loadLibrary() {
+  if (libraryLoaded) return;
+  const data = await (await fetch('/api/sources')).json();
+  libraryLoaded = true;
+  if (data.builtAt) document.getElementById('lib-lead').textContent += ` Index built ${new Date(data.builtAt).toLocaleString()}.`;
+  document.getElementById('lib').innerHTML = data.sources.length ? `<table>
+    <thead><tr><th>Document</th><th>Lang.</th><th class="num">Passages</th><th>Status</th></tr></thead>
+    <tbody>${data.sources.map((s) => `<tr>
+      <td><a href="${esc(s.url)}" target="_blank" rel="noopener"><b>${esc(s.org)}</b> · ${esc(s.title)}</a><div class="lic">${esc(s.license || '')}</div></td>
+      <td>${esc(s.language)}</td><td class="num">${s.passages}</td>
+      <td class="${s.status === 'ok' ? 'ok' : 'failed'}">${s.status === 'ok' ? '✓ indexed' : '✕ failed'}</td></tr>`).join('')}</tbody></table>`
+    : '<p>No documents yet. Run <code>npm run ingest</code>.</p>';
+}
+</script>
+</body>
+</html>

@@ -11,6 +11,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'dart:async';
 
 import 'package:ebola_guard/screens/home_screen.dart';
+import 'package:ebola_guard/screens/chat_screen.dart';
+import 'package:ebola_guard/services/chat_service.dart';
+import 'package:ebola_guard/models/chat_message.dart';
 import 'package:ebola_guard/screens/sign_up_screen.dart';
 import 'package:ebola_guard/services/account_service.dart';
 import 'package:flutter/material.dart';
@@ -242,6 +245,64 @@ void main() {
       await tester.tap(find.text('Create account'));
       await tester.pumpAndSettle();
       expect(find.text('Required'), findsOneWidget);
+    });
+  });
+
+  group('Answers from official sources (RAG)', () {
+    const ragReply = {
+      'reply': 'Symptoms appear 2 to 21 days after contact. [1]',
+      'sources': [
+        {'n': 1, 'org': 'CDC', 'title': 'Signs and Symptoms of Ebola Disease', 'section': 'Early symptoms', 'url': 'https://www.cdc.gov/ebola/signs-symptoms/index.html'},
+        {'n': 'bad'},
+      ],
+      'alert': {'level': 'urgent'},
+      'mode': 'ai',
+    };
+
+    http.Response jsonResponse(Object body) => http.Response(jsonEncode(body), 200,
+        headers: {'content-type': 'application/json; charset=utf-8'});
+
+    test('chat service reads the sources and the alert', () async {
+      final service = ChatService(client: MockClient((req) async => jsonResponse(ragReply)));
+      final reply = await service.ask([const ChatMessage(role: ChatRole.user, text: 'symptoms?')]);
+      expect(reply.text, startsWith('Symptoms appear'));
+      expect(reply.sources, hasLength(1)); // the invalid entry is ignored
+      expect(reply.sources.first.org, 'CDC');
+      expect(reply.sources.first.section, 'Early symptoms');
+      expect(reply.alertLevel, 'urgent');
+    });
+
+    test('old backends without sources still work', () async {
+      final service = ChatService(
+          client: MockClient((req) async => jsonResponse({'reply': 'Wash your hands.'})));
+      final reply = await service.ask([const ChatMessage(role: ChatRole.user, text: 'hi')]);
+      expect(reply.sources, isEmpty);
+      expect(reply.alertLevel, isNull);
+      expect(await service.send([const ChatMessage(role: ChatRole.user, text: 'hi')]), 'Wash your hands.');
+    });
+
+    test('source markers are not read aloud', () {
+      expect(VoiceService.cleanForSpeech('Call the hotline [1] now. [2]'), 'Call the hotline now.');
+    });
+
+    test('the Sources label exists in every language', () {
+      for (final l in appLanguages) {
+        expect(trIn(l.code, 'chat_sources'), isNot('chat_sources'), reason: l.code);
+      }
+    });
+
+    testWidgets('chat shows the alert and the sources under the answer', (tester) async {
+      tester.view.physicalSize = const Size(800, 1600);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      final service = ChatService(client: MockClient((req) async => jsonResponse(ragReply)));
+      await tester.pumpWidget(MaterialApp(
+        home: ChatScreen(service: service, initialQuestion: 'I have a fever after a funeral'),
+      ));
+      await tester.pumpAndSettle();
+      expect(find.text(trIn('en', 'urgent_title')), findsOneWidget);
+      expect(find.text('Sources (official documents)'), findsOneWidget);
+      expect(find.textContaining('Signs and Symptoms of Ebola Disease'), findsOneWidget);
     });
   });
 }

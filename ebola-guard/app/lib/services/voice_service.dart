@@ -107,8 +107,10 @@ class VoiceService {
     _tts.stop();
   }
 
-  /// Removes markdown symbols so they are not read aloud.
+  /// Removes markdown symbols and source markers ("[1]") so they are not
+  /// read aloud.
   static String cleanForSpeech(String text) => text
+      .replaceAll(RegExp(r'\s*\[\d+\]'), '')
       .replaceAll(RegExp(r'[*#_`>|]'), '')
       .replaceAll(RegExp(r'\s+'), ' ')
       .trim();

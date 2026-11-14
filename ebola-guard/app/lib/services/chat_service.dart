@@ -15,6 +15,18 @@ class ChatException implements Exception {
   String toString() => message;
 }
 
+/// The assistant's answer, with the official sources it cites (RAG backend)
+/// and an optional safety alert.
+class ChatReply {
+  const ChatReply({required this.text, this.sources = const [], this.alertLevel});
+
+  final String text;
+  final List<ChatSource> sources;
+
+  /// 'urgent' or 'emergency', or null.
+  final String? alertLevel;
+}
+
 /// Talks to your backend, never directly to the AI provider, so your API key
 /// is never shipped inside the app.
 class ChatService {
@@ -22,7 +34,16 @@ class ChatService {
 
   final http.Client _client;
 
+  /// Only the answer text (kept for code that does not show sources).
   Future<String> send(
+    List<ChatMessage> history, {
+    String? screeningContext,
+    String? mode,
+  }) async =>
+      (await ask(history, screeningContext: screeningContext, mode: mode)).text;
+
+  /// The answer with its sources and safety alert.
+  Future<ChatReply> ask(
     List<ChatMessage> history, {
     String? screeningContext,
     String? mode, // 'voice' = short answers meant to be read aloud
@@ -65,7 +86,17 @@ class ChatService {
     if (reply is! String || reply.isEmpty) {
       throw ChatException(tr('err_empty'));
     }
-    return reply;
+    final rawSources = body['sources'];
+    final sources = rawSources is List
+        ? rawSources.map(ChatSource.fromJson).whereType<ChatSource>().toList()
+        : <ChatSource>[];
+    final alert = body['alert'];
+    final level = alert is Map ? alert['level'] : null;
+    return ChatReply(
+      text: reply,
+      sources: sources,
+      alertLevel: level == 'urgent' || level == 'emergency' ? level as String : null,
+    );
   }
 
   /// Lets users flag a bad or harmful AI answer (required by Google Play's

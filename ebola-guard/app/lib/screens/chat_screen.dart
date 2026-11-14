@@ -5,6 +5,7 @@ import '../models/chat_message.dart';
 import '../l10n/l10n.dart';
 import '../services/chat_service.dart';
 import '../services/voice_service.dart';
+import '../widgets/answer_extras.dart';
 import '../widgets/emergency_banner.dart';
 import 'voice_chat_screen.dart';
 
@@ -69,13 +70,17 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToEnd();
 
     try {
-      final reply = await _service.send(
+      final reply = await _service.ask(
         _messages,
         screeningContext: widget.screeningContext,
       );
       if (!mounted) return;
-      setState(() =>
-          _messages.add(ChatMessage(role: ChatRole.assistant, text: reply)));
+      setState(() => _messages.add(ChatMessage(
+            role: ChatRole.assistant,
+            text: reply.text,
+            sources: reply.sources,
+            alertLevel: reply.alertLevel,
+          )));
     } on ChatException catch (e) {
       if (!mounted) return;
       // Remove the unanswered question so the history stays valid.
@@ -240,10 +245,11 @@ class _Bubble extends StatelessWidget {
             color: mine ? scheme.primary : scheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(18),
           ),
-          child: Text(
-            message.text,
-            style: TextStyle(color: mine ? scheme.onPrimary : scheme.onSurface),
-          ),
+          child: mine
+              ? Text(message.text, style: TextStyle(color: scheme.onPrimary))
+              : AnswerBody(
+                  message: message,
+                  textStyle: TextStyle(color: scheme.onSurface)),
         ),
       ),
     );
