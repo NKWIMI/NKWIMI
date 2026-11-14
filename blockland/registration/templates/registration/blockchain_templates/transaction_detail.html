@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Transaction {{ transaction.tx_hash }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Transaction Details</h1>
+    </div>
+    <div class="card-body">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ transaction.value }} ETH</div>
+                <div class="stat-label">Value</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">
+                    {% if transaction.status %}
+                        <span class="badge badge-success">Success</span>
+                    {% else %}
+                        <span class="badge badge-error">Failed</span>
+                    {% endif %}
+                </div>
+                <div class="stat-label">Status</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ transaction.timestamp|date:"M d, Y" }}</div>
+                <div class="stat-label">Date</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Transaction Hash</th>
+                    <td class="hash">{{ transaction.tx_hash }}</td>
+                </tr>
+                <tr>
+                    <th>Block</th>
+                    <td><a href="{% url 'block_detail' height=transaction.block.height %}">#{{ transaction.block.height }}</a></td>
+                </tr>
+                <tr>
+                    <th>Block Hash</th>
+                    <td class="hash">{{ transaction.block.hash }}</td>
+                </tr>
+                <tr>
+                    <th>From</th>
+                    <td class="hash">{{ transaction.sender }}</td>
+                </tr>
+                <tr>
+                    <th>To</th>
+                    <td class="hash">{{ transaction.recipient }}</td>
+                </tr>
+                <tr>
+                    <th>Value</th>
+                    <td>{{ transaction.value }} ETH</td>
+                </tr>
+                <tr>
+                    <th>Gas Used</th>
+                    <td>{{ transaction.gas_used }}</td>
+                </tr>
+                <tr>
+                    <th>Gas Price</th>
+                    <td>{{ transaction.gas_price }} Gwei</td>
+                </tr>
+                <tr>
+                    <th>Timestamp</th>
+                    <td>{{ transaction.timestamp|date:"M d, Y H:i:s" }}</td>
+                </tr>
+            </table>
+        </div>
+
+        {% if related_transfer %}
+        <h2 style="margin: 2rem 0 1rem;">Related Transfer</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Token ID</th>
+                    <td>{{ related_transfer.token_id }}</td>
+                </tr>
+                <tr>
+                    <th>From</th>
+                    <td class="hash">{{ related_transfer.from_address }}</td>
+                </tr>
+                <tr>
+                    <th>To</th>
+                    <td class="hash">{{ related_transfer.to_address }}</td>
+                </tr>
+                <tr>
+                    <th>Transaction Hash</th>
+                    <td class="hash">{{ related_transfer.transaction_hash }}</td>
+                </tr>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

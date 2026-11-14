@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="admin-dashboard-container">
+    <h1 class="dashboard-title">Admin Dashboard</h1>
+    
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <div class="card-icon">👥</div>
+            <h3 class="card-title">Manage Users</h3>
+            <p class="card-description">Create, view, and manage user accounts</p>
+            <a href="{% url 'admin_panel:admin_manage_users' %}" class="card-button">
+                Access Users
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon">📦</div>
+            <h3 class="card-title">Manage Parcels</h3>
+            <p class="card-description">Handle parcel registrations and transfers</p>
+            <a href="{% url 'admin_panel:admin_manage_parcels' %}" class="card-button">
+                Access Parcels
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">View Logs</h3>
+            <p class="card-description">Monitor system activities and transactions</p>
+            <a href="{% url 'admin_panel:admin_logs' %}" class="card-button">  <!-- FIXED: admin_logs -->
+                View Logs
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon">📋</div>
+            <h3 class="card-title">Generate Reports</h3>
+            <p class="card-description">Create detailed system reports</p>
+            <a href="{% url 'admin_panel:admin_reports' %}" class="card-button">  <!-- FIXED: admin_reports -->
+                Generate Reports
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-dashboard-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e8ed;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card-description {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.card-button {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.card-button:hover {
+    background-color: #2980b9;
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .admin-dashboard-container {
+        padding: 1rem;
+    }
+    
+    .dashboard-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .dashboard-card {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock %}

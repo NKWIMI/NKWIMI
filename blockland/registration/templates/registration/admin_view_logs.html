@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}System Logs - LandChain{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h2>System Logs</h2>
+    <ul class="list-group">
+        {% for log in logs %}
+        <li class="list-group-item">{{ log }}</li>
+        {% empty %}
+        <li class="list-group-item">No logs available.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'admin_panel:admin_dashboard' %}" class="btn btn-outline-secondary mt-3">Back to Admin Dashboard</a>
+</div>
+{% endblock %}

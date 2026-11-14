@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Update Parcel Information
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <!-- Land ID -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.land_id.id_for_label }}" class="form-label fw-semibold">
+                                    <i class="fas fa-tag me-1 text-muted"></i>
+                                    Land ID
+                                </label>
+                                {{ form.land_id }}
+                                {% if form.land_id.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.land_id.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Size -->
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.size_sqm.id_for_label }}" class="form-label fw-semibold">
+                                    <i class="fas fa-ruler-combined me-1 text-muted"></i>
+                                    Size (sqm)
+                                </label>
+                                {{ form.size_sqm }}
+                                {% if form.size_sqm.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.size_sqm.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Coordinates -->
+                        <div class="mb-3">
+                            <label for="{{ form.coordinates_input.id_for_label }}" class="form-label fw-semibold">
+                                <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+                                Coordinates
+                            </label>
+                            {{ form.coordinates_input }}
+                            {% if form.coordinates_input.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.coordinates_input.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Enter as 'latitude,longitude' (e.g., 40.7128,-74.0060)
+                            </div>
+                        </div>
+                        
+                        <!-- Contract File -->
+                        <div class="mb-4">
+                            <label for="{{ form.contract_file.id_for_label }}" class="form-label fw-semibold">
+                                <i class="fas fa-file-contract me-1 text-muted"></i>
+                                Contract File
+                            </label>
+                            {{ form.contract_file }}
+                            {% if form.contract_file.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.contract_file.errors }}
+                                </div>
+                            {% endif %}
+                            {% if object.contract_file %}
+                                <div class="mt-2">
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-file me-1"></i>
+                                        Current file: 
+                                        <a href="{{ object.contract_file.url }}" target="_blank" class="text-white text-decoration-none">
+                                            {{ object.contract_file.name|cut:"contracts/" }}
+                                        </a>
+                                    </span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Owner Address (Readonly) -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-user-circle me-1 text-muted"></i>
+                                Owner Address
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-wallet text-primary"></i>
+                                </span>
+                                <input type="text" class="form-control bg-light" value="{{ object.owner.blockchain_address }}" readonly style="font-family: monospace;">
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-user me-1"></i>
+                                Owner: {{ object.owner.username }}
+                            </div>
+                        </div>
+                        
+                        <!-- Change Notes -->
+                        {% if form.change_notes %}
+                        <div class="mb-4">
+                            <label for="{{ form.change_notes.id_for_label }}" class="form-label fw-semibold">
+                                <i class="fas fa-sticky-note me-1 text-muted"></i>
+                                Change Notes
+                            </label>
+                            {{ form.change_notes }}
+                            {% if form.change_notes.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.change_notes.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Optional: Describe what changes you're making
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <a href="{% url 'parcel:parcel_detail' object.pk %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>
+                                Update Parcel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-control, .form-select {
+        border-radius: 0.5rem;
+        border: 2px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .form-control:read-only {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
+    
+    .form-label {
+        color: #495057;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 1rem;
+    }
+    
+    .card-header {
+        border-radius: 1rem 1rem 0 0 !important;
+        border: none;
+    }
+    
+    .invalid-feedback {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    .btn {
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(45deg, #0d6efd, #0a58ca);
+        border: none;
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #0a58ca, #084298);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-outline-secondary:hover {
+        transform: translateY(-1px);
+    }
+    
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+    }
+    
+    .input-group-text {
+        border-radius: 0.5rem 0 0 0.5rem;
+        border: 2px solid #e9ecef;
+        border-right: none;
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add Bootstrap validation styles
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enable Bootstrap validation
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+        
+        // Add custom styling to form fields
+        const formControls = document.querySelectorAll('.form-control, .form-select');
+        formControls.forEach(control => {
+            // Add is-invalid class if there are errors
+            if (control.nextElementSibling && control.nextElementSibling.classList.contains('invalid-feedback')) {
+                control.classList.add('is-invalid');
+            }
+        });
+    });
+</script>
+{% endblock %}

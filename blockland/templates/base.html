@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blockland - Secure Land Registry on Blockchain{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    
+    <!-- Dark mode preference -->
+    <script>
+        const storedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-bs-theme', theme);
+    </script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <i class="fas fa-cube me-2"></i>
+                <span class="fw-bold">Blockland</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blockchain-explorer' %}">
+                            <i class="fas fa-search me-1"></i> Explorer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'docs' %}">
+                            <i class="fas fa-book me-1"></i> Documentation
+                        </a>
+                    </li>
+                    
+                    <!-- Information pages -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'info:blockchain_info' %}">
+                            <i class="fas fa-info-circle me-1"></i> Blockchain Info
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'info:how_it_works' %}">
+                            <i class="fas fa-cogs me-1"></i> How It Works
+                        </a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                    <!--<li class="nav-item">
+                        <a class="nav-link" href="{% url 'parcel:parcel_list' %}">
+                            <i class="fas fa-map-marked-alt me-1"></i> My Parcels
+                        </a>
+                    </li>-->
+                    
+                    <!-- Admin-specific navigation -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" 
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cog me-1"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_dashboard' %}">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_manage_users' %}">
+                                <i class="fas fa-users me-2"></i>Manage Users
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_manage_parcels' %}">
+                                <i class="fas fa-map-marker-alt me-2"></i>Manage Parcels
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_logs' %}">  <!-- FIXED: admin_logs -->
+                                <i class="fas fa-clipboard-list me-2"></i>System Logs
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_reports' %}">  <!-- FIXED: admin_reports -->
+                                <i class="fas fa-chart-bar me-2"></i>Generate Reports
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_transfer_history' %}">  <!-- FIXED: admin_transfer_history -->
+                                <i class="fas fa-exchange-alt me-2"></i>Transfer History
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_transactions' %}">  <!-- FIXED: admin_transactions -->
+                                <i class="fas fa-receipt me-2"></i>Transaction History
+                            </a></li>
+                        </ul>
+                    </li>
+                    {% endif %}           
+                    {% endif %}
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-2"></i>
+                            {{ user.username }}
+                            {% if user.is_staff or user.is_superuser %}
+                            <span class="badge bg-warning ms-1">Admin</span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{% url 'profile:profile_detail' %}">
+                                <i class="fas fa-user-circle me-2"></i>Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile:user_dashboard' %}">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a></li>
+                            
+                            {% if user.is_staff or user.is_superuser %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_dashboard' %}">
+                                <i class="fas fa-cog me-2"></i>Admin Panel
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_panel:admin_parcel_create' %}">
+                                <i class="fas fa-plus-circle me-2"></i>Create Parcel
+                            </a></li>
+                            {% endif %}
+                            
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{% url 'auth:logout' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Visible logout button (desktop only) -->
+                    <li class="nav-item ms-2 d-none d-lg-block">
+                        <form action="{% url 'auth:logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-sign-out-alt me-1"></i>Logout
+                            </button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Dark/Light Mode Toggle -->
+                    <li class="nav-item ms-2">
+                        <button class="btn btn-link nav-link py-2 px-2" id="themeToggle" title="Toggle theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 my-lg-5">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">Blockland</h5>
+                    <p class="text-muted">
+                        Secure land registry on the Ethereum blockchain.
+                        Fraud-proof, transparent, and tamper-resistant.
+                    </p>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">Explore</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'blockchain-explorer' %}" class="text-decoration-none text-muted">Block Explorer</a></li>
+                        <li class="mb-2"><a href="{% url 'docs' %}" class="text-decoration-none text-muted">Documentation</a></li>
+                        <li class="mb-2"><a href="{% url 'info:blockchain_info' %}" class="text-decoration-none text-muted">Learn about blockchain</a></li>
+                        <li class="mb-2"><a href="{% url 'info:how_it_works' %}" class="text-decoration-none text-muted">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">Legal</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Terms</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Privacy</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Cookies</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Connect</h5>
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-github fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-discord fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-telegram fa-lg"></i></a>
+                    </div>
+                    <p class="text-muted small mb-0">
+                        &copy; {% now "Y" %} Blockland. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    
+    <!-- Theme Toggle Script -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        function updateThemeIcon() {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            if (currentTheme === 'dark') {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+        
+        updateThemeIcon();
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeIcon();
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

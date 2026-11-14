@@ -1,0 +1,442 @@
+{% extends "base.html" %}
+{% load static humanize %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">
+                    <i class="bi bi-list-ul me-2"></i>Transaction History
+                </h3>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-funnel me-1"></i>Filter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="?status=">All Transactions</a></li>
+                        <li><a class="dropdown-item" href="?status=initiated">Initiated</a></li>
+                        <li><a class="dropdown-item" href="?status=accepted">Accepted</a></li>
+                        <li><a class="dropdown-item" href="?status=rejected">Rejected</a></li>
+                        <li><a class="dropdown-item" href="?status=canceled">Canceled</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>TX Hash</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Parcel</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in transactions %}
+                        <tr>
+                            <td>
+                                {% if tx.transaction_hash %}
+                                <a href="{% url 'blockchain:transaction_detail' tx.transaction_hash %}" 
+                                   title="{{ tx.transaction_hash }}">
+                                    <code>{{ tx.transaction_hash|truncatechars:8 }}</code>
+                                </a>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if tx.from_user %}
+                                {{ tx.from_user.username }}
+                                {% else %}
+                                <span class="text-muted">Unknown</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if tx.to_user %}
+                                {{ tx.to_user.username }}
+                                {% else %}
+                                <span class="text-muted">Unknown</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if tx.parcel %}
+                                {{ tx.parcel.land_id }}
+                                {% else %}
+                                <span class="text-muted">N/A</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-{% if tx.status == 'accepted' %}success{% elif tx.status == 'initiated' %}warning{% elif tx.status == 'rejected' or tx.status == 'canceled' %}danger{% else %}secondary{% endif %}">
+                                    {{ tx.status|title }}
+                                </span>
+                            </td>
+                            <td>{{ tx.timestamp|date:"M d, Y H:i" }}</td>
+                            <td>
+                                {% if tx.transfer %}
+                                <a href="{% url 'transfer:transfer_detail' tx.transfer.id %}" class="btn btn-sm btn-outline-primary">
+                                    View Transfer
+                                </a>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <i class="bi bi-receipt fs-1 text-muted"></i>
+                                <h5 class="mt-3">No transactions found</h5>
+                                <p class="text-muted">Your transaction history will appear here once you make transfers.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    Showing <strong>{{ transactions.start_index }}-{{ transactions.end_index }}</strong> 
+                    of <strong>{{ transactions.paginator.count }}</strong> transactions
+                </div>
+                <nav aria-label="Transaction navigation">
+                    <ul class="pagination mb-0">
+                        {% if transactions.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ transactions.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Previous</a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for num in transactions.paginator.page_range %}
+                        <li class="page-item {% if num == transactions.number %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ num }}</a>
+                        </li>
+                        {% endfor %}
+                        
+                        {% if transactions.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ transactions.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter functionality
+    const filterDropdown = document.querySelector('.dropdown');
+    const filterItems = document.querySelectorAll('.dropdown-item');
+    const filterButton = document.querySelector('.dropdown-toggle');
+    
+    // Apply filter when dropdown item is clicked
+    filterItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filterType = this.textContent.trim();
+            const status = this.getAttribute('data-status') || '';
+            
+            // Update button text
+            filterButton.innerHTML = `<i class="bi bi-funnel me-1"></i> ${filterType}`;
+            
+            // Apply filter via URL
+            if (status) {
+                window.location.href = `?status=${status}`;
+            } else {
+                window.location.href = window.location.pathname;
+            }
+        });
+    });
+
+    // Search functionality
+    const searchInput = document.querySelector('input[name="q"]');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchValue = this.value.trim();
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                if (searchValue) {
+                    urlParams.set('q', searchValue);
+                } else {
+                    urlParams.delete('q');
+                }
+                
+                window.location.search = urlParams.toString();
+            }
+        });
+    }
+
+    // Transaction row click handler
+    const transactionRows = document.querySelectorAll('table tbody tr');
+    transactionRows.forEach(row => {
+        row.addEventListener('click', function(e) {
+            // Don't trigger if clicking on links or buttons
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button')) {
+                return;
+            }
+            
+            // Try to find transaction hash link
+            const txHashLink = this.querySelector('td:first-child a');
+            if (txHashLink && txHashLink.href) {
+                window.location.href = txHashLink.href;
+            } else {
+                // Fallback: Show transaction details in modal or alert
+                showTransactionDetails(this);
+            }
+        });
+        
+        // Add hover effect
+        row.style.cursor = 'pointer';
+        row.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#f8f9fa';
+        });
+        row.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '';
+        });
+    });
+
+    // Pagination enhancement
+    const paginationLinks = document.querySelectorAll('.pagination a');
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = new URL(this.href);
+            window.location.href = url.toString();
+        });
+    });
+
+    // Auto-refresh transactions (optional)
+    let autoRefreshInterval;
+    const refreshCheckbox = document.createElement('div');
+    refreshCheckbox.innerHTML = `
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input" type="checkbox" id="autoRefresh">
+            <label class="form-check-label" for="autoRefresh">Auto-refresh every 30 seconds</label>
+        </div>
+    `;
+    
+    document.querySelector('.card-footer').prepend(refreshCheckbox);
+    
+    const autoRefreshToggle = document.getElementById('autoRefresh');
+    if (autoRefreshToggle) {
+        autoRefreshToggle.addEventListener('change', function() {
+            if (this.checked) {
+                autoRefreshInterval = setInterval(() => {
+                    refreshTransactions();
+                }, 30000);
+            } else {
+                clearInterval(autoRefreshInterval);
+            }
+        });
+    }
+
+    // Copy transaction hash to clipboard
+    document.querySelectorAll('td:first-child a code').forEach(code => {
+        const link = code.closest('a');
+        code.title = 'Click to copy';
+        code.style.cursor = 'pointer';
+        
+        code.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const textToCopy = link.getAttribute('title') || code.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast('Transaction hash copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Failed to copy to clipboard', 'error');
+            });
+        });
+    });
+
+    // Status filter badges
+    const statusBadges = document.querySelectorAll('.badge');
+    statusBadges.forEach(badge => {
+        const status = badge.textContent.toLowerCase();
+        badge.title = `Filter by ${status} status`;
+        badge.style.cursor = 'pointer';
+        
+        badge.addEventListener('click', function(e) {
+            e.stopPropagation();
+            window.location.href = `?status=${status}`;
+        });
+    });
+
+    // Export functionality
+    const exportButton = document.createElement('button');
+    exportButton.className = 'btn btn-outline-success ms-2';
+    exportButton.innerHTML = '<i class="bi bi-download me-1"></i> Export';
+    exportButton.addEventListener('click', exportTransactions);
+    
+    document.querySelector('.card-header .d-flex').appendChild(exportButton);
+
+    // Helper functions
+    function showTransactionDetails(row) {
+        const cells = row.querySelectorAll('td');
+        const details = {
+            'TX Hash': cells[0].textContent.trim(),
+            'From': cells[1].textContent.trim(),
+            'To': cells[2].textContent.trim(),
+            'Parcel': cells[3].textContent.trim(),
+            'Status': cells[4].textContent.trim(),
+            'Date': cells[5].textContent.trim()
+        };
+        
+        const detailText = Object.entries(details)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('\n');
+        
+        // Using SweetAlert2 if available, otherwise native alert
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Transaction Details',
+                html: Object.entries(details)
+                    .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+                    .join(''),
+                icon: 'info',
+                confirmButtonText: 'Close'
+            });
+        } else {
+            alert(detailText);
+        }
+    }
+
+    function refreshTransactions() {
+        fetch(window.location.href)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const newDocument = parser.parseFromString(html, 'text/html');
+                const newTable = newDocument.querySelector('.table-responsive');
+                
+                if (newTable) {
+                    document.querySelector('.table-responsive').innerHTML = newTable.innerHTML;
+                    showToast('Transactions refreshed', 'success');
+                    reattachEventListeners();
+                }
+            })
+            .catch(error => {
+                console.error('Refresh failed:', error);
+                showToast('Refresh failed', 'error');
+            });
+    }
+
+    function reattachEventListeners() {
+        // Reattach event listeners to new rows
+        const newRows = document.querySelectorAll('table tbody tr');
+        newRows.forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+                showTransactionDetails(this);
+            });
+            row.style.cursor = 'pointer';
+        });
+        
+        // Reattach copy functionality
+        document.querySelectorAll('td:first-child a code').forEach(code => {
+            const link = code.closest('a');
+            code.title = 'Click to copy';
+            code.style.cursor = 'pointer';
+            
+            code.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const textToCopy = link.getAttribute('title') || code.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast('Transaction hash copied to clipboard!', 'success');
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    showToast('Failed to copy to clipboard', 'error');
+                });
+            });
+        });
+    }
+
+    function exportTransactions() {
+        const rows = [];
+        const headers = ['TX Hash', 'From', 'To', 'Parcel', 'Status', 'Date'];
+        rows.push(headers);
+        
+        document.querySelectorAll('table tbody tr').forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const rowData = [
+                cells[0].textContent.trim(),
+                cells[1].textContent.trim(),
+                cells[2].textContent.trim(),
+                cells[3].textContent.trim(),
+                cells[4].textContent.trim(),
+                cells[5].textContent.trim()
+            ];
+            rows.push(rowData);
+        });
+        
+        const csvContent = rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `transactions-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        
+        showToast('Transactions exported successfully!', 'success');
+    }
+
+    function showToast(message, type = 'info') {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} border-0`;
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+        
+        const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+        toastContainer.appendChild(toast);
+        
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+        
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+    }
+
+    function createToastContainer() {
+        const container = document.createElement('div');
+        container.id = 'toastContainer';
+        container.className = 'toast-container position-fixed top-0 end-0 p-3';
+        container.style.zIndex = '9999';
+        document.body.appendChild(container);
+        return container;
+    }
+
+    // Initialize tooltips
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+
+    console.log('Transaction list JavaScript loaded successfully');
+});
+</script>
+{% endblock %}

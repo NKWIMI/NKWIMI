@@ -1,0 +1,277 @@
+<!-- registration/templates/registration/blockchain_templates/address_detail.html -->
+{% extends "registration/base.html" %}
+{% load static %}
+
+{% block title %}Address {{ address|truncatechars:12 }} - Land Registry{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Details - Blockchain Explorer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background-color: var(--dark-color);
+        }
+        
+        .address-header {
+            background: linear-gradient(135deg, #1a3a8f, #0d6efd);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+        
+        .address-hash {
+            font-family: monospace;
+            font-size: 1.1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+        
+        .balance-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+        
+        .transaction-item {
+            border-left: 4px solid transparent;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+        
+        .transaction-item:hover {
+            background-color: #e9ecef;
+        }
+        
+        .incoming {
+            border-left-color: var(--success-color);
+        }
+        
+        .outgoing {
+            border-left-color: var(--danger-color);
+        }
+        
+        .hash-text {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .parcel-badge {
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-link-45deg"></i> Blockchain Explorer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-search"></i> Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-list-check"></i> Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-arrow-repeat"></i> Sync</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light me-2"><i class="bi bi-person-circle"></i> Account</a>
+                    <a href="#" class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Address Header -->
+    <div class="address-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-5 fw-bold mb-2">Address Details</h1>
+                    <div class="address-hash d-inline-block">{{ address }}</div>
+                </div>
+                <div class="text-end">
+                    <a href="#" class="btn btn-light me-2"><i class="bi bi-qr-code"></i> QR Code</a>
+                    <a href="#" class="btn btn-warning"><i class="bi bi-copy"></i> Copy Address</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Error: {{ error }}
+            </div>
+        {% endif %}
+        
+        <!-- Balance and Overview -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card balance-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted">Balance</h5>
+                        <div class="balance-amount">{{ balance }} ETH</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-info-circle"></i> Overview
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Total Transactions:</strong> {{ transaction_count }}</p>
+                                <p><strong>Parcels Owned:</strong> {{ parcels|length }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>First Seen:</strong> {{ transactions.last.timestamp|date:"M d, Y"|default:"Unknown" }}</p>
+                                <p><strong>Last Seen:</strong> {{ transactions.first.timestamp|date:"M d, Y"|default:"Unknown" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parcels -->
+        {% if parcels %}
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-geo-alt"></i> Parcels Owned ({{ parcels|length }})
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap">
+                    {% for parcel in parcels %}
+                    <span class="badge bg-success parcel-badge p-2 m-1">
+                        <i class="bi bi-geo"></i> Parcel #{{ parcel.id }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Transactions -->
+        <div class="card">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-list-ul"></i> Transactions ({{ transaction_count }})</span>
+                <a href="#" class="btn btn-sm btn-light">View All</a>
+            </div>
+            <div class="card-body">
+                {% for tx in transactions %}
+                <div class="transaction-item {% if tx.recipient == address %}incoming{% else %}outgoing{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="badge {% if tx.recipient == address %}bg-success{% else %}bg-danger{% endif %} me-2">
+                                    {% if tx.recipient == address %}IN{% else %}OUT{% endif %}
+                                </span>
+                                <strong class="hash-text">{{ tx.tx_hash }}</strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <small><strong>From:</strong> {{ tx.sender }}</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <small><strong>To:</strong> {{ tx.recipient }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">{{ tx.value }} ETH</div>
+                            <small class="text-muted">{{ tx.timestamp|date:"M d, Y H:i" }}</small>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4">
+                    <i class="bi bi-inbox" style="font-size: 3rem; color: #dee2e6;"></i>
+                    <p class="text-muted mt-2">No transactions found for this address</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="mb-0">Blockchain Explorer &copy; 2023 | Powered by Web3.py</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

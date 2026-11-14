@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section with Gradient Background -->
+<section class="hero-section bg-gradient-primary text-white py-5 py-md-6" role="main">
+    <div class="container text-center px-3 px-sm-0">
+        <div class="hero-content mx-auto" style="max-width: 800px;">
+            <h1 class="display-4 fw-bold mb-3">Secure Land Registry on the Blockchain</h1>
+            <p class="lead mb-4 fs-5">
+                Fraud-proof, transparent, and tamper-resistant ownership management powered by Ethereum.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin_panel:admin_dashboard' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm" aria-label="Go to Admin Dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                        </a>
+                        
+                    {% else %}
+                        <a href="{% url 'profile:user_dashboard' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm" aria-label="Go to User Dashboard">
+                            <i class="fas fa-home me-2"></i>User Dashboard
+                        </a>
+                        <a href="{% url 'profile:profile_detail' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm" aria-label="View Profile">
+                            <i class="fas fa-user-circle me-2"></i>Profile
+                        </a>
+                        <a href="{% url 'parcel:parcel_list' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm" aria-label="View Parcels">
+                            <i class="fas fa-map-marked-alt me-2"></i>My Parcels
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'auth:login' %}" class="btn btn-light btn-lg px-4 py-2 shadow-sm" aria-label="Login to your account">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                    <a href="{% url 'info:blockchain_info' %}" class="btn btn-outline-light btn-lg px-4 py-2 shadow-sm" aria-label="Learn about blockchain">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                {% endif %}
+            </div>
+            {% if not user.is_authenticated %}
+                <p class="mt-3 mb-0 text-white-50">
+                    <i class="fas fa-info-circle me-1"></i> Contact system administrator for account access.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 py-md-6 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Why Choose Blockland?</h2>
+            <p class="lead text-muted">Revolutionizing land registration with blockchain technology</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 60px; height: 60px; line-height: 60px;">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                        </div>
+                        <h4 class="card-title h5">Immutable Records</h4>
+                        <p class="card-text text-muted">
+                            Once recorded on the blockchain, land ownership data cannot be altered or tampered with, ensuring permanent integrity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-success bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 60px; height: 60px; line-height: 60px;">
+                            <i class="fas fa-eye fa-2x"></i>
+                        </div>
+                        <h4 class="card-title h5">Transparent History</h4>
+                        <p class="card-text text-muted">
+                            Complete transaction history and ownership records are visible to authorized parties, reducing fraud and disputes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-info bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 60px; height: 60px; line-height: 60px;">
+                            <i class="fas fa-bolt fa-2x"></i>
+                        </div>
+                        <h4 class="card-title h5">Instant Verification</h4>
+                        <p class="card-text text-muted">
+                            Verify property ownership and transaction history instantly without intermediaries or lengthy bureaucratic processes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 py-md-6">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+            <p class="lead text-muted">Simple steps to secure your land ownership</p>
+        </div>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="process-step mb-4">
+                    <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">1</div>
+                    <h4 class="h5">Register Your Property</h4>
+                    <p class="text-muted">Upload your property documents and create a digital land parcel on the blockchain.</p>
+                </div>
+                
+                <div class="process-step mb-4">
+                    <div class="step-number bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">2</div>
+                    <h4 class="h5">Smart Contract Verification</h4>
+                    <p class="text-muted">Our system verifies ownership through smart contracts and creates an immutable record.</p>
+                </div>
+                
+                <div class="process-step mb-4">
+                    <div class="step-number bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">3</div>
+                    <h4 class="h5">Secure Transactions</h4>
+                    <p class="text-muted">Transfer ownership through secure, transparent blockchain transactions.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">4</div>
+                    <h4 class="h5">24/7 Access</h4>
+                    <p class="text-muted">Access your property records anytime, anywhere with complete security.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <img src="{% static 'images/blockchain-process.svg' %}" alt="Blockchain Process" class="img-fluid" style="max-width: 400px;">
+                    <p class="text-muted mt-3 small">Visual representation of the blockchain land registration process</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 py-md-6 bg-dark text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-number display-4 fw-bold text-primary">500+</div>
+                <p class="text-white-50 mb-0">Properties Registered</p>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-number display-4 fw-bold text-success">99.9%</div>
+                <p class="text-white-50 mb-0">Uptime Guarantee</p>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-number display-4 fw-bold text-info">24/7</div>
+                <p class="text-white-50 mb-0">Support Available</p>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stat-number display-4 fw-bold text-warning">0</div>
+                <p class="text-white-50 mb-0">Security Breaches</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 py-md-6 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-3">Ready to Secure Your Property?</h2>
+        <p class="lead mb-4">Join thousands of property owners who have already secured their land titles on the blockchain.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+               
+                <a href="{% url 'info:how_it_works' %}" class="btn btn-outline-light btn-lg px-4 py-2">
+                    <i class="fas fa-play-circle me-2"></i>See Demo
+                </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+// Additional JavaScript for home page animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stats counting
+    const statElements = document.querySelectorAll('.stat-number');
+    statElements.forEach(stat => {
+        const target = parseInt(stat.textContent);
+        let current = 0;
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                stat.textContent = target;
+                clearInterval(timer);
+            } else {
+                stat.textContent = Math.floor(current);
+            }
+        }, 16);
+    });
+});
+</script>
+{% endblock %}

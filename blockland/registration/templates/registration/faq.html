@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}FAQ - Blockland{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5" role="main">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Frequently Asked Questions</h1>
+        <p class="lead mb-5">Find answers to common questions about Blockland and blockchain land registration</p>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Search Box -->
+                <div class="card border-0 shadow-sm mb-5">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-search fa-2x text-primary mb-3"></i>
+                            <h3>Find Your Answer</h3>
+                            <p class="text-muted">Search our FAQ database or browse by category</p>
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control border-start-0" placeholder="Type your question here..." id="faqSearch">
+                            <button class="btn btn-primary" type="button">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Categories -->
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold mb-4">Browse by Category</h2>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#general" class="btn btn-outline-primary rounded-pill">General</a>
+                        <a href="#registration" class="btn btn-outline-primary rounded-pill">Registration</a>
+                        <a href="#technical" class="btn btn-outline-primary rounded-pill">Technical</a>
+                        <a href="#security" class="btn btn-outline-primary rounded-pill">Security</a>
+                        <a href="#legal" class="btn btn-outline-primary rounded-pill">Legal</a>
+                    </div>
+                </div>
+
+                <!-- General Questions -->
+                <div class="mb-5" id="general">
+                    <h3 class="border-bottom pb-2 mb-4">General Questions</h3>
+                    
+                    <div class="accordion" id="generalAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#generalOne">
+                                    What is Blockland?
+                                </button>
+                            </h2>
+                            <div id="generalOne" class="accordion-collapse collapse show" data-bs-parent="#generalAccordion">
+                                <div class="accordion-body">
+                                    Blockland is a secure land registry platform built on blockchain technology. 
+                                    It provides a transparent, tamper-proof system for recording property ownership 
+                                    and transfers using Ethereum smart contracts and decentralized storage.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#generalTwo">
+                                    How does blockchain improve land registration?
+                                </button>
+                            </h2>
+                            <div id="generalTwo" class="accordion-collapse collapse" data-bs-parent="#generalAccordion">
+                                <div class="accordion-body">
+                                    Blockchain technology creates an immutable, transparent record of property ownership 
+                                    that cannot be altered or tampered with. It eliminates fraud, reduces processing time, 
+                                    increases transparency, and lowers costs by removing intermediaries from the process.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#generalThree">
+                                    Is Blockland available in my country?
+                                </button>
+                            </h2>
+                            <div id="generalThree" class="accordion-collapse collapse" data-bs-parent="#generalAccordion">
+                                <div class="accordion-body">
+                                    Blockland is designed to work globally, but local regulations may affect its use in some regions. 
+                                    We are continuously working to expand our services to comply with regulations in different countries. 
+                                    Please check our documentation for specific country availability.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Questions -->
+                <div class="mb-5" id="registration">
+                    <h3 class="border-bottom pb-2 mb-4">Registration Process</h3>
+                    
+                    <div class="accordion" id="registrationAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#registrationOne">
+                                    How do I create an account?
+                                </button>
+                            </h2>
+                            <div id="registrationOne" class="accordion-collapse collapse show" data-bs-parent="#registrationAccordion">
+                                <div class="accordion-body">
+                                    To create an account, click on the "Register" button and provide the required information. 
+                                    You'll need to verify your email address and complete identity verification by submitting 
+                                    government-issued ID documents. Once verified, your blockchain wallet will be automatically created.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#registrationTwo">
+                                    What documents do I need to register a property?
+                                </button>
+                            </h2>
+                            <div id="registrationTwo" class="accordion-collapse collapse" data-bs-parent="#registrationAccordion">
+                                <div class="accordion-body">
+                                    Typically, you'll need:
+                                    <ul>
+                                        <li>Government-issued identification</li>
+                                        <li>Proof of ownership (existing title deed, purchase agreement, etc.)</li>
+                                        <li>Property survey documents</li>
+                                        <li>Tax payment records</li>
+                                        <li>Any other documents specific to your jurisdiction</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#registrationThree">
+                                    How long does the verification process take?
+                                </button>
+                            </h2>
+                            <div id="registrationThree" class="accordion-collapse collapse" data-bs-parent="#registrationAccordion">
+                                <div class="accordion-body">
+                                    Identity verification typically takes 1-2 business days. Property registration verification 
+                                    may take 3-5 business days, depending on the complexity of the property and the completeness 
+                                    of your documentation. You'll receive email notifications at each step of the process.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Questions -->
+                <div class="mb-5" id="technical">
+                    <h3 class="border-bottom pb-2 mb-4">Technical Questions</h3>
+                    
+                    <div class="accordion" id="technicalAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#technicalOne">
+                                    Do I need to understand blockchain to use Blockland?
+                                </button>
+                            </h2>
+                            <div id="technicalOne" class="accordion-collapse collapse show" data-bs-parent="#technicalAccordion">
+                                <div class="accordion-body">
+                                    No, you don't need to understand blockchain technology to use Blockland. Our platform is designed 
+                                    to be user-friendly and abstract away the technical complexities. The blockchain operations happen 
+                                    seamlessly in the background while you interact with a simple, intuitive interface.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#technicalTwo">
+                                    What blockchain does Blockland use?
+                                </button>
+                            </h2>
+                            <div id="technicalTwo" class="accordion-collapse collapse" data-bs-parent="#technicalAccordion">
+                                <div class="accordion-body">
+                                    Blockland is built on the Ethereum blockchain, which provides robust security, smart contract 
+                                    functionality, and widespread adoption. We use Ethereum's mainnet for production and testnets 
+                                    for development and testing.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#technicalThree">
+                                    How are my documents stored?
+                                </button>
+                            </h2>
+                            <div id="technicalThree" class="accordion-collapse collapse" data-bs-parent="#technicalAccordion">
+                                <div class="accordion-body">
+                                    Your documents are encrypted and stored on IPFS (InterPlanetary File System), a decentralized 
+                                    storage network. Only cryptographic hashes of your documents are stored on the blockchain, 
+                                    ensuring privacy while maintaining the integrity and permanence of your records.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Questions -->
+                <div class="mb-5" id="security">
+                    <h3 class="border-bottom pb-2 mb-4">Security & Privacy</h3>
+                    
+                    <div class="accordion" id="securityAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#securityOne">
+                                    Is my data secure on Blockland?
+                                </button>
+                            </h2>
+                            <div id="securityOne" class="accordion-collapse collapse show" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    Yes, Blockland employs multiple layers of security:
+                                    <ul>
+                                        <li>Military-grade encryption for all sensitive data</li>
+                                        <li>Secure blockchain technology with immutable records</li>
+                                        <li>Two-factor authentication options</li>
+                                        <li>Regular security audits and penetration testing</li>
+                                        <li>Decentralized storage to prevent single points of failure</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#securityTwo">
+                                    Who can access my property information?
+                                </button>
+                            </h2>
+                            <div id="securityTwo" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    Property ownership information is public on the blockchain, but personal details are encrypted 
+                                    and private. Only authorized parties with the appropriate permissions can view sensitive information. 
+                                    You control what information is shared and with whom.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#securityThree">
+                                    What happens if I lose my private keys?
+                                </button>
+                            </h2>
+                            <div id="securityThree" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    Blockland provides a secure key recovery system. During registration, you set up recovery options 
+                                    that allow you to regain access to your account if you lose your keys. This process involves 
+                                    identity verification and may take 24-48 hours for security reasons.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal Questions -->
+                <div class="mb-5" id="legal">
+                    <h3 class="border-bottom pb-2 mb-4">Legal & Compliance</h3>
+                    
+                    <div class="accordion" id="legalAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#legalOne">
+                                    Is blockchain land registration legally recognized?
+                                </button>
+                            </h2>
+                            <div id="legalOne" class="accordion-collapse collapse show" data-bs-parent="#legalAccordion">
+                                <div class="accordion-body">
+                                    The legal recognition of blockchain land registration varies by jurisdiction. Many countries 
+                                    are adopting laws that recognize blockchain records as legally binding. Blockland works with 
+                                    legal authorities to ensure compliance with local regulations. We recommend consulting with 
+                                    a legal professional in your area to understand the specific legal status.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#legalTwo">
+                                    How are disputes resolved?
+                                </button>
+                            </h2>
+                            <div id="legalTwo" class="accordion-collapse collapse" data-bs-parent="#legalAccordion">
+                                <div class="accordion-body">
+                                    Blockland provides an immutable record of ownership and transfers, which serves as strong evidence 
+                                    in dispute resolution. For complex disputes, we offer mediation services and work with legal 
+                                    authorities. The transparent nature of blockchain significantly reduces disputes by providing 
+                                    clear ownership history.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#legalThree">
+                                    What are the fees associated with using Blockland?
+                                </button>
+                            </h2>
+                            <div id="legalThree" class="accordion-collapse collapse" data-bs-parent="#legalAccordion">
+                                <div class="accordion-body">
+                                    Blockland charges a one-time registration fee for each property and minimal transaction fees 
+                                    for transfers. These fees cover blockchain gas costs and platform maintenance. There are no 
+                                    hidden fees or recurring charges for basic property management. Detailed fee information is 
+                                    available in our pricing section.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Support -->
+                <div class="card border-0 shadow-sm mt-5">
+                    <div class="card-body p-5 text-center">
+                        <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                        <h3 class="mb-3">Still Have Questions?</h3>
+                        <p class="text-muted mb-4">Our support team is here to help you with any questions or concerns</p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="#" class="btn btn-primary px-4">
+                                <i class="fas fa-envelope me-2"></i>Contact Support
+                            </a>
+                            <a href="{% url 'docs' %}" class="btn btn-outline-primary px-4">
+                                <i class="fas fa-book me-2"></i>View Documentation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.hero-section {
+    background: linear-gradient(rgba(13, 110, 253, 0.9), rgba(9, 88, 202, 0.9)), url('https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(13, 110, 253, 0.05);
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(13, 110, 253, 0.25);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // FAQ search functionality
+    const faqSearch = document.getElementById('faqSearch');
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    
+    if (faqSearch) {
+        faqSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            accordionItems.forEach(item => {
+                const question = item.querySelector('.accordion-button').textContent.toLowerCase();
+                const answer = item.querySelector('.accordion-body').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    // Open the accordion if it matches search
+                    const collapse = item.querySelector('.accordion-collapse');
+                    if (!collapse.classList.contains('show')) {
+                        const bsCollapse = new bootstrap.Collapse(collapse, {
+                            toggle: true
+                        });
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // Smooth scrolling for category links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

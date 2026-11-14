@@ -1,0 +1,352 @@
+{% extends 'base.html' %}
+
+{% block title %}Block Explorer{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Block Explorer</h1>
+    </div>
+    <div class="card-body">
+        <form method="get" action="{% url 'blockchain-explorer' %}" class="search-box">
+            <input type="text" name="q" value="{{ search_query }}" class="search-input" placeholder="Search by block height, block hash, or transaction hash...">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+
+        {% if current_block or current_transaction %}
+            {% if current_block %}
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Block Details</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">{{ current_block.height }}</div>
+                                <div class="stat-label">Block Height</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">{{ current_block.blockchain_transactions.count }}</div>
+                                <div class="stat-label">Transactions</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">{{ current_block.timestamp|date:"M d, Y H:i:s" }}</div>
+                                <div class="stat-label">Timestamp</div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <tr>
+                                    <th>Hash</th>
+                                    <td class="hash">{{ current_block.hash }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Parent Hash</th>
+                                    <td class="hash">{{ current_block.parent_hash }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Miner</th>
+                                    <td class="hash">{{ current_block.miner }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Difficulty</th>
+                                    <td>{{ current_block.difficulty }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gas Used</th>
+                                    <td>{{ current_block.gas_used }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gas Limit</th>
+                                    <td>{{ current_block.gas_limit }}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <h3 style="margin: 1.5rem 0 1rem;">Transactions</h3>
+                        {% if current_block.blockchain_transactions.all %}
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Hash</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Value</th>
+                                            <th>Timestamp</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tx in current_block.blockchain_transactions.all %}
+                                        <tr>
+                                            <td><a href="{% url 'transaction_detail' tx_hash=tx.tx_hash %}" class="hash hash-short">{{ tx.tx_hash|slice:":16" }}...</a></td>
+                                            <td class="hash hash-short">{{ tx.sender|slice:":12" }}...</td>
+                                            <td class="hash hash-short">{{ tx.recipient|slice:":12" }}...</td>
+                                            <td>{{ tx.value }} ETH</td>
+                                            <td>{{ tx.timestamp|date:"M d, Y H:i" }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p>No transactions in this block.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if current_transaction %}
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Transaction Details</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <tr>
+                                    <th>Hash</th>
+                                    <td class="hash">{{ current_transaction.tx_hash }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Block</th>
+                                    <td><a href="{% url 'block_detail' height=current_transaction.block.height %}" class="hash hash-short">#{{ current_transaction.block.height }}</a></td>
+                                </tr>
+                                <tr>
+                                    <th>From</th>
+                                    <td class="hash">{{ current_transaction.sender }}</td>
+                                </tr>
+                                <tr>
+                                    <th>To</th>
+                                    <td class="hash">{{ current_transaction.recipient }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Value</th>
+                                    <td>{{ current_transaction.value }} ETH</td>
+                                </tr>
+                                <tr>
+                                    <th>Gas Used</th>
+                                    <td>{{ current_transaction.gas_used }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gas Price</th>
+                                    <td>{{ current_transaction.gas_price }} Gwei</td>
+                                </tr>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <td>{{ current_transaction.timestamp|date:"M d, Y H:i:s" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>
+                                        {% if current_transaction.status %}
+                                            <span class="badge badge-success">Success</span>
+                                        {% else %}
+                                            <span class="badge badge-error">Failed</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        {% if related_transfer %}
+                        <h3 style="margin: 1.5rem 0 1rem;">Related Transfer</h3>
+                        <div class="table-container">
+                            <table>
+                                <tr>
+                                    <th>Token ID</th>
+                                    <td>{{ related_transfer.token_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>From</th>
+                                    <td class="hash">{{ related_transfer.from_address }}</td>
+                                </tr>
+                                <tr>
+                                    <th>To</th>
+                                    <td class="hash">{{ related_transfer.to_address }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <!-- Latest Blocks Section -->
+            <h2>Latest Blocks</h2>
+            {% for block in latest_blocks %}
+                <div class="block-item">
+                    <strong>Height:</strong> {{ block.height }}<br>
+                    <strong>Hash:</strong> {{ block.short_hash }}<br>
+                    <strong>Timestamp:</strong> {{ block.timestamp }}<br>
+                    <strong>Transactions:</strong> {{ block.blockchain_transactions.count }}<br>
+                </div>
+            {% endfor %}
+
+            <!-- Latest Transactions Section -->
+            <h2>Latest Transactions</h2>
+            {% if latest_transactions %}
+                {% for transaction in latest_transactions %}
+                    <div class="transaction-item">
+                        <strong>Hash:</strong> {{ transaction.short_tx_hash }}<br>
+                        <strong>From:</strong> {{ transaction.short_sender }}<br>
+                        <strong>To:</strong> {{ transaction.short_recipient }}<br>
+                        <strong>Amount:</strong> {{ transaction.amount }}<br>
+                        <strong>Block:</strong> {{ transaction.block.height }}<br>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No transactions found.</p>
+            {% endif %}
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="blocks">All Blocks</div>
+                <div class="tab" data-tab="transactions">All Transactions</div>
+            </div>
+
+            <div class="tab-content active" id="blocks-tab">
+                <h2 style="margin-bottom: 1rem;">All Blocks</h2>
+                {% if blocks %}
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Height</th>
+                                    <th>Hash</th>
+                                    <th>Transactions</th>
+                                    <th>Miner</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for block in blocks %}
+                                <tr>
+                                    <td><a href="{% url 'blockchain:block_detail' height=block.height %}">{{ block.height }}</a></td>
+                                    <td><a href="{% url 'blockchain-explorer' %}?block={{ block.hash }}" class="hash hash-short">{{ block.hash|slice:":16" }}...</a></td>
+                                    <td>{{ block.blockchain_transactions.count }}</td>
+                                    <td class="hash hash-short">{{ block.miner|slice:":12" }}...</td>
+                                    <td>{{ block.timestamp|date:"M d, Y H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        {% if blocks.has_previous %}
+                            <a href="?page={{ blocks.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&laquo;</a>
+                        {% endif %}
+
+                        {% for num in blocks.paginator.page_range %}
+                            {% if blocks.number == num %}
+                                <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link active">{{ num }}</a>
+                            {% elif num > blocks.number|add:'-3' and num < blocks.number|add:'3' %}
+                                <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if blocks.has_next %}
+                            <a href="?page={{ blocks.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&raquo;</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No blocks found.</p>
+                {% endif %}
+            </div>
+
+            <div class="tab-content" id="transactions-tab">
+                <h2 style="margin-bottom: 1rem;">All Transactions</h2>
+                {% if transactions %}
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hash</th>
+                                    <th>Block</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Value</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tx in transactions %}
+                                <tr>
+                                    <td><a href="{% url 'transaction_detail' tx_hash=tx.tx_hash %}" class="hash hash-short">{{ tx.tx_hash|slice:":16" }}...</a></td>
+                                    <td><a href="{% url 'block_detail' height=tx.block.height %}">#{{ tx.block.height }}</a></td>
+                                    <td class="hash hash-short">{{ tx.sender|slice:":12" }}...</td>
+                                    <td class="hash hash-short">{{ tx.recipient|slice:":12" }}...</td>
+                                    <td>{{ tx.value }} ETH</td>
+                                    <td>{{ tx.timestamp|date:"M d, Y H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        {% if transactions.has_previous %}
+                            <a href="?page={{ transactions.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&laquo;</a>
+                        {% endif %}
+
+                        {% for num in transactions.paginator.page_range %}
+                            {% if transactions.number == num %}
+                                <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link active">{{ num }}</a>
+                            {% elif num > transactions.number|add:'-3' and num < transactions.number|add:'3' %}
+                                <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if transactions.has_next %}
+                            <a href="?page={{ transactions.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&raquo;</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No transactions found.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show active tab content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${tabId}-tab`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<style>
+    .block-item, .transaction-item {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: #f9f9f9;
+    }
+    
+    .block-item:hover, .transaction-item:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}

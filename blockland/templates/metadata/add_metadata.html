@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4">Add Metadata for {{ parcel.land_id }}</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="mb-3">
+                <label class="form-label">Document</label>
+                {% render_field form.document class="form-control" %}
+                <small class="form-text text-muted">
+                    Upload the document for this version (PDF, image, or document)
+                </small>
+                {% if form.document.errors %}
+                    <div class="text-danger small">
+                        {% for error in form.document.errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                {% render_field form.description class="form-control" %}
+                <small class="form-text text-muted">
+                    Describe what's new in this version
+                </small>
+            </div>
+            
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    Submit Metadata
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

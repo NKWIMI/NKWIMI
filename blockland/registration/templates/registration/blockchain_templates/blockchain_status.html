@@ -1,0 +1,93 @@
+<!-- registration/templates/registration/blockchain_templates/blockchain_status.html -->
+{% extends "registration/base.html" %}
+{% load static %}
+
+{% block title %}Blockchain Status - Land Registry{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Blockchain Status</h6>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                    <div class="alert alert-danger text-white" role="alert">
+                        {{ error }}
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>Network Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <th>Chain ID</th>
+                                            <td>{{ chain_id }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Current Block</th>
+                                            <td>{{ block_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gas Price</th>
+                                            <td>{{ gas_price }} Gwei</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>Account Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <th>Account Address</th>
+                                            <td class="text-truncate" style="max-width: 200px;">{{ account_address }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Account Balance</th>
+                                            <td>{{ account_balance }} ETH</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6>Contract Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <th>Contract Address</th>
+                                            <td class="text-truncate" style="max-width: 200px;">{{ contract_address }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Contract Balance</th>
+                                            <td>{{ contract_balance }} ETH</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

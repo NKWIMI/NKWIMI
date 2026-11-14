@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load static humanize %}
+
+{% block content %}
+<nav class="mb-4">
+    <a href="{% url 'profile:user_dashboard' %}" class="btn btn-link">🏠 Home</a>
+</nav>
+
+<main class="container py-5" role="main">
+    <div class="text-center">
+        <h1 class="mb-4">Welcome to Your Dashboard, {{ user.username }}!</h1>
+        <p class="lead">Manage your land parcels, transfers, and view your activity.</p>
+    </div>
+
+    {% if messages %}
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- User Stats -->
+    <div class="row my-5">
+        <div class="col-md-3 mb-3">
+            <div class="card border-start border-primary border-4 shadow-sm">
+                <div class="card-body">
+                    <h6>ETH Balance</h6>
+                    <h2>{{ balance_eth|floatformat:4 }} ETH</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-start border-success border-4 shadow-sm">
+                <div class="card-body">
+                    <h6>My Transactions</h6>
+                    <h2>{{ user_transactions_count|intcomma }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-start border-info border-4 shadow-sm">
+                <div class="card-body">
+                    <h6>My Transfers</h6>
+                    <h2>{{ user_transfers_count|intcomma }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-start border-warning border-4 shadow-sm">
+                <div class="card-body">
+                    <h6>Last Login</h6>
+                    <h6>{{ last_login|date:"M d, Y H:i"|default:"Never" }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transfers Section -->
+    <div class="card mb-5">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5>My Recent Transfers</h5>
+            <a href="{% url 'transfer:transfer_list' %}" class="btn btn-sm btn-outline-primary">
+                View All Transfers
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Type</th>
+                            <th>Counterparty</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transfer in recent_transfers %}
+                        <tr>
+                            <td>
+                                {% if transfer.sender == user %}
+                                    <span class="text-danger">Sent</span>
+                                {% else %}
+                                    <span class="text-success">Received</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if transfer.sender == user %}
+                                    To: {{ transfer.recipient.username }}
+                                {% else %}
+                                    From: {{ transfer.sender.username }}
+                                {% endif %}
+                            </td>
+                            <td>{{ transfer.amount }} ETH</td>
+                            <td>
+                                <span class="badge bg-{% if transfer.status == 'completed' %}success{% elif transfer.status == 'pending' %}warning{% elif transfer.status == 'rejected' %}danger{% else %}secondary{% endif %}">
+                                    {{ transfer.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ transfer.created_at|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <a href="{% url 'transfer:transfer_detail' transfer.pk %}" class="btn btn-sm btn-info" title="View Details">
+                                    👁️
+                                </a>
+                                <a href="{% url 'transfer:transfer_print' transfer.pk %}" class="btn btn-sm btn-warning" title="Print Transfer" target="_blank">
+                                    🖨️
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4">No recent transfers</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card mb-5">
+        <div class="card-header bg-light">
+            <h5>My Recent Transactions</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Property</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in recent_transactions %}
+                        <tr>
+                            <td>{{ tx.transaction_type }}</td>
+                            <td>{{ tx.amount }} ETH</td>
+                            <td>
+                                {% if tx.property %}
+                                    <a href="{% url 'parcel:parcel_detail' tx.property.pk %}" class="text-decoration-none">
+                                        {{ tx.property.parcel_number|default:"N/A" }}
+                                    </a>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>{{ tx.date|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <span class="badge bg-{% if tx.is_completed %}success{% else %}warning{% endif %}">
+                                    {{ tx.is_completed|yesno:"Completed,Pending" }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4">No recent transactions</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions - Only show user-appropriate actions -->
+    <section class="row justify-content-center mt-4">
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'parcel:parcel_list' %}" class="btn btn-primary btn-lg w-100">
+                🏢 View My Parcels
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'transfer:transfer_list' %}" class="btn btn-info btn-lg w-100">
+                📜 All Transfers
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'profile:profile_detail' %}" class="btn btn-secondary btn-lg w-100">
+                👤 My Profile
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <form method="post" action="{% url 'auth:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-lg w-100">🚪 Logout</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Blockchain Info -->
+    {% if has_blockchain_profile %}
+    <div class="card mt-4">
+        <div class="card-header bg-dark text-white">
+            <h6>Blockchain Information</h6>
+        </div>
+        <div class="card-body">
+            <p><strong>Your Blockchain Address:</strong> <code>{{ user.profile.blockchain_address }}</code></p>
+            <p><small class="text-muted">This address is used for all your blockchain transactions.</small></p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Print Instructions -->
+    <div class="alert alert-info mt-4">
+        <strong>💡 Print Options:</strong>
+        <ul class="mb-0 mt-2">
+            <li>Click the 🖨️ icon next to any transfer to print transfer details</li>
+            <li>Visit your parcels page to print parcel titles</li>
+            <li>Use your browser's print function (Ctrl+P) for any page</li>
+        </ul>
+    </div>
+</main>
+{% endblock %}

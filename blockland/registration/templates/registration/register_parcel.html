@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">🏡 Register New Parcel</h2>
+
+                    <!-- Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Global errors -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                            {% if field.name != 'owner_address' or user.is_staff or user.is_superuser %}
+                            <div class="mb-3" id="field-{{ field.name }}">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                    {% if field.name == 'coordinates_input' %}
+                                        📍 Coordinates
+                                    {% elif field.name == 'owner_address' %}
+                                        🔗 Owner Blockchain Address
+                                    {% elif field.name == 'land_id' %}
+                                        🆔 Parcel ID
+                                    {% elif field.name == 'size_sqm' %}
+                                        📏 Size
+                                    {% elif field.name == 'owner' %}
+                                        👤 Owner
+                                    {% elif field.name == 'contract_file' %}
+                                        📄 Contract Document
+                                    {% elif field.name == 'change_notes' %}
+                                        📝 Change Notes
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                    {% if field.field.required %}
+                                        <span class="text-danger">*</span>
+                                    {% endif %}
+                                </label>
+
+                                {% if field.name == 'coordinates_input' %}
+                                    {% render_field field class="form-control" placeholder="40.7128,-74.0060" %}
+                                    <small class="form-text text-muted">
+                                        Enter coordinates as latitude,longitude (e.g., 40.7128,-74.0060)
+                                    </small>
+                                
+                                {% elif field.name == 'owner' %}
+                                    {% render_field field class="form-select" onchange="updateOwnerAddress(this.value)" %}
+                                    <small class="form-text text-muted">
+                                        Select the owner of this parcel. The blockchain address will auto-update.
+                                    </small>
+                                
+                                {% elif field.name == 'owner_address' %}
+                                    {% if user.is_staff or user.is_superuser %}
+                                        {% render_field field class="form-control" placeholder="0x..." %}
+                                        <small class="form-text text-muted">
+                                            Enter the Ethereum address of the parcel owner (must start with 0x and be 42 characters long)
+                                        </small>
+                                    {% endif %}
+                                
+                                {% elif field.name == 'land_id' %}
+                                    {% render_field field class="form-control" placeholder="LOT-1234" %}
+                                    <small class="form-text text-muted">
+                                        Enter a unique identifier for the parcel (e.g., LOT-1234).
+                                    </small>
+                                
+                                {% elif field.name == 'size_sqm' %}
+                                    {% render_field field class="form-control" placeholder="1000.00" %}
+                                    <small class="form-text text-muted">
+                                        Enter the parcel size in square meters.
+                                    </small>
+                                
+                                {% elif field.name == 'contract_file' %}
+                                    {% render_field field class="form-control" %}
+                                    <small class="form-text text-muted">
+                                        Upload contract document (PDF, DOC, DOCX, TXT, JPG, PNG)
+                                    </small>
+                                
+                                {% elif field.name == 'change_notes' %}
+                                    {% render_field field class="form-control" %}
+                                    <small class="form-text text-muted">
+                                        Optional notes about this registration
+                                    </small>
+                                
+                                {% else %}
+                                    {% render_field field class="form-control" %}
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in field.errors %}
+                                            {{ error }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <!-- Hidden owner_address field for regular users -->
+                        {% if not user.is_staff and not user.is_superuser %}
+                            {% for field in form %}
+                                {% if field.name == 'owner_address' %}
+                                    {{ field }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary w-100 mt-4">
+                            <i class="fas fa-plus-circle me-2"></i>Register Parcel
+                        </button>
+                    </form>
+
+                    <a href="{% url 'profile:user_dashboard' %}" class="btn btn-secondary w-100 mt-3">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for dynamic owner address updates -->
+<script>
+function updateOwnerAddress(ownerId) {
+    if (ownerId && ({{ user.is_staff|yesno:"true,false" }} || {{ user.is_superuser|yesno:"true,false" }})) {
+        // Show loading state
+        const addressField = document.getElementById('id_owner_address');
+        if (addressField) {
+            addressField.value = "Loading...";
+        }
+        
+        // In a real implementation, you would fetch from your API
+        // For now, we'll simulate with a timeout and use the form's initial value
+        setTimeout(() => {
+            // This would typically be an AJAX call to get the user's blockchain address
+            console.log('Would fetch blockchain address for user ID:', ownerId);
+            // For demo purposes, we'll leave it empty and let the user fill it
+            if (addressField && !addressField.value || addressField.value === "Loading...") {
+                addressField.value = "";
+                addressField.placeholder = "Enter 0x... address for selected owner";
+            }
+        }, 500);
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const ownerSelect = document.getElementById('id_owner');
+    if (ownerSelect && ownerSelect.value && ({{ user.is_staff|yesno:"true,false" }} || {{ user.is_superuser|yesno:"true,false" }})) {
+        updateOwnerAddress(ownerSelect.value);
+    }
+    
+    // Add real-time validation for owner_address field
+    const ownerAddressField = document.getElementById('id_owner_address');
+    if (ownerAddressField) {
+        ownerAddressField.addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && !value.startsWith('0x')) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+    }
+});
+
+// Display current user's blockchain address for regular users
+{% if not user.is_staff and not user.is_superuser %}
+document.addEventListener('DOMContentLoaded', function() {
+    const userAddress = "{{ user.blockchain_address|default:'Not set' }}";
+    if (userAddress && userAddress !== 'Not set') {
+        // Create a display element for the address
+        const addressDisplay = document.createElement('div');
+        addressDisplay.className = 'alert alert-info mt-3';
+        addressDisplay.innerHTML = `
+            <strong><i class="fas fa-wallet me-2"></i>Your Blockchain Address:</strong><br>
+            <code class="small">${userAddress}</code>
+            <br><small class="text-muted">This address will be used as the parcel owner address.</small>
+        `;
+        
+        // Insert after the owner field or before the submit button
+        const ownerField = document.getElementById('field-owner');
+        if (ownerField) {
+            ownerField.parentNode.insertBefore(addressDisplay, ownerField.nextSibling);
+        }
+    } else {
+        // Show warning if no blockchain address
+        const warningDisplay = document.createElement('div');
+        warningDisplay.className = 'alert alert-warning mt-3';
+        warningDisplay.innerHTML = `
+            <strong><i class="fas fa-exclamation-triangle me-2"></i>No Blockchain Address Found</strong><br>
+            <small>Please ensure your profile has a valid blockchain address set.</small>
+        `;
+        
+        const ownerField = document.getElementById('field-owner');
+        if (ownerField) {
+            ownerField.parentNode.insertBefore(warningDisplay, ownerField.nextSibling);
+        }
+    }
+});
+{% endif %}
+</script>
+
+<style>
+.form-select:readonly, .form-select:disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
+.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+code {
+    word-break: break-all;
+    background: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+}
+</style>
+{% endblock %}

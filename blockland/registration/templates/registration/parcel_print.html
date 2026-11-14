@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parcel Document - {{ parcel.land_id }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        
+        body { 
+            font-family: "Times New Roman", serif; 
+            margin: 0;
+            padding: 0;
+            font-size: 12pt;
+            line-height: 1.4;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+        
+        .header h1 {
+            font-size: 16pt;
+            margin: 0;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .header h2 {
+            font-size: 14pt;
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+        
+        .section {
+            margin: 15px 0;
+        }
+        
+        .section h3 {
+            font-size: 13pt;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .info-item {
+            margin-bottom: 8px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            display: inline-block;
+            width: 200px;
+        }
+        
+        .signature-area {
+            margin-top: 60px;
+            text-align: center;
+        }
+        
+        .signature-line {
+            width: 300px;
+            border-top: 1px solid #000;
+            margin: 40px auto 5px;
+            padding-top: 5px;
+        }
+        
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        
+        .attestation {
+            margin-top: 30px;
+            font-style: italic;
+            border: 1px solid #000;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            font-size: 10pt;
+            color: #666;
+            text-align: center;
+        }
+        
+        @media print {
+            body { 
+                margin: 0;
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header similar to the provided document -->
+    <div class="header">
+        <h1>Démarche de Terre</h1>
+        <h2>(PERSONNE PHYSIQUE)</h2>
+    </div>
+
+    <!-- Owner Information Section -->
+    <div class="section">
+        <h3>Informations du Propriétaire</h3>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Nom :</span> {{ user.last_name|default:"Non spécifié" }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Prénoms :</span> {{ user.first_name|default:"Non spécifié" }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Adresse Blockchain :</span> {{ parcel.owner_address }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email :</span> {{ user.email|default:"Non spécifié" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Parcel Details Section -->
+    <div class="section">
+        <h3>Détails de la Parcelle</h3>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">ID de la Parcelle :</span> {{ parcel.land_id }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Localisation :</span> {{ parcel.location|default:"Non spécifié" }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Superficie :</span> {{ parcel.area|default:"Non spécifié" }} m²
+            </div>
+            <div class="info-item">
+                <span class="info-label">Date d'enregistrement :</span> {{ parcel.created_at|date:"d/m/Y" }}
+            </div>
+        </div>
+        
+        <div class="info-item" style="margin-top: 10px;">
+            <span class="info-label">Description :</span> {{ parcel.description|default:"Aucune description" }}
+        </div>
+    </div>
+
+    <!-- Blockchain Verification Section -->
+    <div class="section">
+        <h3>Vérification Blockchain</h3>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Hash de transaction :</span> {{ parcel.transaction_hash|default:"Non enregistré sur la blockchain" }}
+            </div>
+            <div class="info-item">
+                <span class="info-label">Hash IPFS :</span> {{ parcel.latest_ipfs_hash|default:"Aucun document stocké" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="qr-code">
+        <h3>Code QR de Vérification</h3>
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" width="150" height="150">
+        <p>Scannez pour vérifier ce document en ligne</p>
+    </div>
+
+    <!-- Attestation Section -->
+    <div class="attestation">
+        <p>Je soussigné(e) <strong>{{ user.get_full_name|default:user.username }}</strong>, propriétaire de la parcelle <strong>{{ parcel.land_id }}</strong>,</p>
+        <p>déclare sur l'honneur que les renseignements fournis ci-dessus sont exacts et conformes à la réalité.</p>
+        <p>J'atteste être le légitime propriétaire de cette parcelle et avoir régularisé sa situation auprès des autorités compétentes.</p>
+        <p><strong>N.B. :</strong> L'inexactitude des renseignements ci-dessus entraînerait l'invalidation de ce document.</p>
+    </div>
+
+    <!-- Signature Area -->
+    <div class="signature-area">
+        <div class="signature-line">
+            Fait à <strong>{{ parcel.location|default:"[Lieu]" }}</strong>, le <strong>{{ generated_date|date:"d/m/Y" }}</strong>
+        </div>
+        <div>(Signature)</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Document généré par le Système BlockLand - {{ site_url }}</p>
+        <p>ID du document: {{ parcel.land_id }}-{{ generated_date|date:"YmdHis" }}</p>
+    </div>
+
+    <!-- Print Script -->
+    <script>
+        window.onload = function() {
+            window.print();
+            
+            // Optional: Add a button to go back
+            var backButton = document.createElement('button');
+            backButton.textContent = 'Retour';
+            backButton.className = 'no-print';
+            backButton.style.position = 'fixed';
+            backButton.style.top = '10px';
+            backButton.style.right = '10px';
+            backButton.style.padding = '10px 15px';
+            backButton.style.backgroundColor = '#007bff';
+            backButton.style.color = 'white';
+            backButton.style.border = 'none';
+            backButton.style.borderRadius = '5px';
+            backButton.style.cursor = 'pointer';
+            backButton.onclick = function() {
+                window.history.back();
+            };
+            
+            document.body.appendChild(backButton);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Transfer Details #{{ transfer.id }} - Admin - LandChain{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Transfer Details #{{ transfer.id }}</h1>
+        <div class="btn-group">
+            <a href="{% url 'admin_panel:admin_transfer_history' %}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left fa-sm me-1"></i> Back to List
+            </a>
+            {% if transfer.status == 'pending' %}
+            <form method="post" action="{% url 'admin_panel:admin_transfer_sync' transfer.id %}" 
+                  class="d-inline ms-2" onsubmit="return confirm('Force sync this transfer with blockchain?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning btn-sm">
+                    <i class="fas fa-sync-alt fa-sm me-1"></i> Sync with Blockchain
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Debug Info (remove after testing) -->
+    <div class="alert alert-info mb-4">
+        <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Debug Information</h6>
+        <hr>
+        <div class="row">
+            <div class="col-md-3"><strong>Transfer ID:</strong> {{ transfer.id }}</div>
+            <div class="col-md-3"><strong>Parcel:</strong> {{ transfer.parcel.land_id }}</div>
+            <div class="col-md-3"><strong>Sender:</strong> {{ transfer.sender.username }}</div>
+            <div class="col-md-3"><strong>Recipient:</strong> {{ transfer.recipient.username }}</div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-3"><strong>Status:</strong> {{ transfer.status }}</div>
+            <div class="col-md-9"><strong>Created:</strong> {{ transfer.created_at|date:"M d, Y H:i" }}</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Transfer Information -->
+        <div class="col-lg-8">
+            <!-- Transfer Details Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-exchange-alt me-2"></i>Transfer Information
+                    </h6>
+                    <span class="badge bg-primary">ID: {{ transfer.id }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold text-gray-700 mb-3">Basic Information</h6>
+                            <table class="table table-sm table-borderless">
+                                <tr>
+                                    <td class="text-muted" width="40%">Transfer ID:</td>
+                                    <td><strong>#{{ transfer.id }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Status:</td>
+                                    <td>
+                                        <span class="badge bg-{% if transfer.status == 'completed' %}success{% elif transfer.status == 'pending' %}warning{% elif transfer.status == 'canceled' %}danger{% elif transfer.status == 'rejected' %}secondary{% else %}info{% endif %}">
+                                            {{ transfer.get_status_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Created:</td>
+                                    <td>{{ transfer.created_at|date:"M d, Y H:i" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Last Updated:</td>
+                                    <td>{{ transfer.updated_at|date:"M d, Y H:i"|default:"-" }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold text-gray-700 mb-3">Blockchain Information</h6>
+                            <table class="table table-sm table-borderless">
+                                <tr>
+                                    <td class="text-muted" width="40%">Transaction Hash:</td>
+                                    <td>
+                                        {% if transfer.transaction_hash %}
+                                        <div class="d-flex align-items-center">
+                                            <code class="small text-truncate" style="max-width: 150px;" title="{{ transfer.transaction_hash }}">
+                                                {{ transfer.transaction_hash }}
+                                            </code>
+                                            <button class="btn btn-sm btn-outline-secondary ms-2 btn-copy" data-text="{{ transfer.transaction_hash }}">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                        {% else %}
+                                        <span class="text-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">IPFS Hash:</td>
+                                    <td>
+                                        {% if transfer.ipfs_hash %}
+                                        <code class="small">{{ transfer.ipfs_hash }}</code>
+                                        {% else %}
+                                        <span class="text-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Sender Approved:</td>
+                                    <td>
+                                        {% if transfer.sender_approved %}
+                                        <span class="badge bg-success">Yes</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">No</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Recipient Approved:</td>
+                                    <td>
+                                        {% if transfer.recipient_approved %}
+                                        <span class="badge bg-success">Yes</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">No</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parties Involved -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-users me-2"></i>Parties Involved
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-left-primary h-100">
+                                <div class="card-body">
+                                    <h6 class="font-weight-bold text-primary mb-3">
+                                        <i class="fas fa-paper-plane me-2"></i>Sender
+                                    </h6>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="avatar-lg bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                            <span class="text-white fw-bold h5 mb-0">{{ transfer.sender.username|first|upper }}</span>
+                                        </div>
+                                        <div>
+                                            <strong class="d-block">{{ transfer.sender.username }}</strong>
+                                            <small class="text-muted d-block">{{ transfer.sender.email|default:"No email" }}</small>
+                                            <small class="text-monospace text-truncate d-block" style="max-width: 200px;" title="{{ transfer.sender.blockchain_address|default:'No address' }}">
+                                                {{ transfer.sender.blockchain_address|default:"No address" }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group w-100">
+                                        <a href="{% url 'admin_panel:admin_user_detail' transfer.sender.id %}" 
+                                           class="btn btn-sm btn-outline-primary">View Profile</a>
+                                        <a href="{% url 'admin_panel:admin_manage_users' %}?search={{ transfer.sender.username }}" 
+                                           class="btn btn-sm btn-outline-secondary">Find in Users</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-left-success h-100">
+                                <div class="card-body">
+                                    <h6 class="font-weight-bold text-success mb-3">
+                                        <i class="fas fa-user-check me-2"></i>Recipient
+                                    </h6>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="avatar-lg bg-success rounded-circle d-flex align-items-center justify-content-center me-3">
+                                            <span class="text-white fw-bold h5 mb-0">{{ transfer.recipient.username|first|upper }}</span>
+                                        </div>
+                                        <div>
+                                            <strong class="d-block">{{ transfer.recipient.username }}</strong>
+                                            <small class="text-muted d-block">{{ transfer.recipient.email|default:"No email" }}</small>
+                                            <small class="text-monospace text-truncate d-block" style="max-width: 200px;" title="{{ transfer.recipient.blockchain_address|default:'No address' }}">
+                                                {{ transfer.recipient.blockchain_address|default:"No address" }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group w-100">
+                                        <a href="{% url 'admin_panel:admin_user_detail' transfer.recipient.id %}" 
+                                           class="btn btn-sm btn-outline-success">View Profile</a>
+                                        <a href="{% url 'admin_panel:admin_manage_users' %}?search={{ transfer.recipient.username }}" 
+                                           class="btn btn-sm btn-outline-secondary">Find in Users</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Parcel Information -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-map-marker-alt me-2"></i>Parcel Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <h6 class="font-weight-bold text-info mb-3">{{ transfer.parcel.land_id }}</h6>
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <td class="text-muted" width="40%">Location:</td>
+                            <td>{{ transfer.parcel.location|default:"Not specified" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Area:</td>
+                            <td>{{ transfer.parcel.area|default:"Not specified" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Current Owner:</td>
+                            <td>{{ transfer.parcel.owner.username|default:"Not assigned" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Status:</td>
+                            <td>
+                                <span class="badge bg-{{ transfer.parcel.status|default:'secondary' }}">
+                                    {{ transfer.parcel.get_status_display|default:"Unknown" }}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                    <a href="{% url 'admin_panel:admin_parcel_detail' transfer.parcel.id %}" 
+                       class="btn btn-sm btn-outline-primary btn-block mt-3">
+                        <i class="fas fa-external-link-alt me-1"></i>View Parcel Details
+                    </a>
+                </div>
+            </div>
+
+            <!-- Blockchain Status -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-link me-2"></i>Blockchain Status
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% if blockchain_error %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Error:</strong> {{ blockchain_error }}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-{% if sync_status.in_sync %}success{% else %}warning{% endif %}">
+                        <i class="fas fa-{% if sync_status.in_sync %}check-circle{% else %}exclamation-triangle{% endif %} me-2"></i>
+                        {% if sync_status.in_sync %}
+                        Database and blockchain are in sync
+                        {% else %}
+                        Database and blockchain are out of sync
+                        {% endif %}
+                    </div>
+                    
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <td class="text-muted">Blockchain Active:</td>
+                            <td>
+                                {% if sync_status.blockchain_active %}
+                                <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">DB Status:</td>
+                            <td>
+                                <span class="badge bg-{% if transfer.status == 'pending' %}warning{% elif transfer.status == 'completed' %}success{% else %}info{% endif %}">
+                                    {{ transfer.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% if sync_status.needs_sync %}
+                        <tr>
+                            <td colspan="2" class="text-center pt-2">
+                                <small class="text-warning">
+                                    <i class="fas fa-exclamation-circle me-1"></i>
+                                    Sync recommended
+                                </small>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Transfer Actions -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-cogs me-2"></i>Transfer Actions
+                    </h6>
+                </div>
+                <div class="card-body text-center">
+                    {% if transfer.status == 'pending' %}
+                    <div class="mb-3">
+                        <span class="badge bg-warning p-2">
+                            <i class="fas fa-clock me-1"></i>Pending Approval
+                        </span>
+                    </div>
+                    <small class="text-muted d-block">
+                        Waiting for both parties to approve
+                    </small>
+                    {% elif transfer.status == 'completed' %}
+                    <div class="mb-3">
+                        <span class="badge bg-success p-2">
+                            <i class="fas fa-check-circle me-1"></i>Completed
+                        </span>
+                    </div>
+                    <small class="text-muted d-block">
+                        Transfer successfully completed
+                    </small>
+                    {% elif transfer.status == 'canceled' %}
+                    <div class="mb-3">
+                        <span class="badge bg-danger p-2">
+                            <i class="fas fa-times-circle me-1"></i>Canceled
+                        </span>
+                    </div>
+                    <small class="text-muted d-block">
+                        Transfer was canceled
+                    </small>
+                    {% elif transfer.status == 'rejected' %}
+                    <div class="mb-3">
+                        <span class="badge bg-secondary p-2">
+                            <i class="fas fa-ban me-1"></i>Rejected
+                        </span>
+                    </div>
+                    <small class="text-muted d-block">
+                        Transfer was rejected
+                    </small>
+                    {% endif %}
+                    
+                    {% if transfer.transaction_hash %}
+                    <a href="#" class="btn btn-info btn-sm mt-3 w-100" onclick="alert('Transaction hash: {{ transfer.transaction_hash }}')">
+                        <i class="fas fa-receipt me-1"></i>View Transaction
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+}
+.avatar-lg {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+}
+.table-borderless td {
+    border: none !important;
+    padding: 0.3rem 0;
+}
+.card {
+    border: none;
+    border-radius: 0.5rem;
+}
+.card-header {
+    border-bottom: 1px solid #e3e6f0;
+    background-color: #f8f9fc;
+}
+.border-left-primary {
+    border-left: 4px solid #4e73df !important;
+}
+.border-left-success {
+    border-left: 4px solid #1cc88a !important;
+}
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Copy to clipboard functionality
+    document.querySelectorAll('.btn-copy').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const text = this.getAttribute('data-text');
+            navigator.clipboard.writeText(text).then(function() {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy text to clipboard');
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

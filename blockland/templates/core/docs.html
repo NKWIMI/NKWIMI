@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Documentation - Blockland{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar -->
+    <div class="col-lg-3 d-none d-lg-block">
+        <div class="doc-sidebar pt-3">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    Documentation
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#getting-started" class="list-group-item list-group-item-action">Getting Started</a>
+                    <a href="{% url 'auth:login' %}" class="list-group-item list-group-item-action">Authentication</a>
+                    <a href="#blockchain" class="list-group-item list-group-item-action">Blockchain API</a>
+                    <a href="{% url 'api-doc' %}" class="list-group-item list-group-item-action">API Reference →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main documentation content -->
+    <div class="col-lg-9">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h1 class="card-title mb-4">Blockland Documentation</h1>
+                <p class="lead">Welcome to the Blockland developer documentation. This guide provides details on how to integrate with our blockchain-based land registry system.</p>
+            </div>
+        </div>
+
+        <div id="getting-started" class="card shadow-sm mb-4">
+            <div class="card-header">
+                Getting Started
+            </div>
+            <div class="card-body">
+                <p>To start using Blockland, you need to register an account and obtain API credentials.</p>
+                <pre><code>POST /api/register
+{
+  "username": "example",
+  "password": "••••••••"
+}</code></pre>
+            </div>
+        </div>
+
+        <div id="authentication" class="card shadow-sm mb-4">
+            <div class="card-header">
+                Authentication
+            </div>
+            <div class="card-body">
+                <p>All requests must be authenticated using your API token:</p>
+                <pre><code>Authorization: Token your_api_token_here</code></pre>
+            </div>
+        </div>
+
+        <div id="blockchain" class="card shadow-sm mb-4">
+            <div class="card-header">
+                Blockchain API
+            </div>
+            <div class="card-body">
+                <p>Our blockchain API provides transparent and immutable records of land ownership.</p>
+                <pre><code>GET /api/blockchain/blocks</code></pre>
+                <p>This endpoint retrieves the full blockchain history.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

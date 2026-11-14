@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>User Details: {{ user_detail.username }}</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Basic Information</h5>
+            <p><strong>Email:</strong> {{ user_detail.email }}</p>
+            <p><strong>Joined:</strong> {{ user_detail.date_joined|date:"M d, Y" }}</p>
+            <p><strong>Status:</strong> 
+                <span class="badge {% if user_detail.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                    {% if user_detail.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+                {% if not user_detail.is_verified %}
+                <span class="badge bg-warning">Unverified</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Verification</h5>
+            {% if not user_detail.is_verified %}
+            <form method="post" action="{% url 'admin_panel:admin_verify_user' user_detail.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Verify User</button>
+            </form>
+            {% else %}
+            <p class="text-success">User is verified</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">User Activity</h5>
+            <p><strong>Last Login:</strong> {{ user_detail.last_login|default:"Never" }}</p>
+            <!-- Add more activity stats as needed -->
+        </div>
+    </div>
+</div>
+{% endblock %}

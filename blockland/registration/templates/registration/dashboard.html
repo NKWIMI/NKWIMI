@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static humanize %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard Overview
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card border-start border-success border-4">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Total Blocks</h6>
+                                    <h2 class="mb-0">{{ total_blocks|intcomma }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card border-start border-info border-4">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Network Transactions</h6>
+                                    <h2 class="mb-0">{{ total_transactions|intcomma }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card border-start border-warning border-4">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Your Transactions</h6>
+                                    <h2 class="mb-0">{{ user_transactions|intcomma }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Recent Activity</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>TX Hash</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tx in recent_transactions %}
+                                        <tr>
+                                            <td><code>{{ tx.hash|truncatechars:10 }}</code></td>
+                                            <td class="text-nowrap">{{ tx.amount }} BLK</td>
+                                            <td><span class="badge bg-success">Confirmed</span></td>
+                                            <td>{{ tx.timestamp|date:"M d, Y H:i" }}</td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4">No recent transactions</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Account Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="avatar avatar-lg me-3">
+                            <span class="avatar-title rounded-circle bg-primary text-white">
+                                {{ user.username|first|upper }}
+                            </span>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">{{ user.username }}</h5>
+                            <span class="text-muted">Last login: {{ last_login|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-3">
+                        <h6>Wallet Balance</h6>
+                        <h2 class="text-success">100.50 <small class="text-muted">BLK</small></h2>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6>Account Status</h6>
+                        <span class="badge bg-{% if custom_data.account_status == 'verified' %}success{% else %}warning{% endif %}">
+                            {{ custom_data.account_status|title }}
+                        </span>
+                    </div>
+
+                    <a href="{% url 'account-settings' %}" class="btn btn-outline-primary w-100 mt-2">
+                        <i class="bi bi-gear me-2"></i>Account Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    .avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .avatar-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        font-weight: 600;
+    }
+    table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+    }
+</style>
+{% endblock %}

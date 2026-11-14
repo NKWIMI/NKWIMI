@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Email Verification</h2>
+{% if success %}
+<p>Your email has been successfully verified!</p>
+{% else %}
+<p>The verification link was invalid or has expired.</p>
+{% endif %}
+{% endblock %}

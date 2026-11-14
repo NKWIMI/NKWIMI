@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container dashboard-container">
+    <h1 class="dashboard-title">{{ page_title }}</h1>
+    
+    <div class="dashboard-grid">
+        <!-- Summary Cards -->
+        <div class="dashboard-row">
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Documents</h3>
+                <p class="card-value">{{ documents.count }}</p>
+                <p class="card-description">Documents uploaded</p>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Parcels</h3>
+                <p class="card-value">{{ parcels.count }}</p>
+                <p class="card-description">Owned parcels</p>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>Tasks</h3>
+                <p class="card-value">42</p>
+                <p class="card-description">Pending completion</p>
+            </div>
+        </div>
+        
+        <!-- Documents List -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-file-alt"></i> Your Documents</h2>
+            {% if documents %}
+                {% for document in documents %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <strong>{{ document.name }}</strong>
+                            <a href="{{ document.file.url }}" target="_blank" class="btn btn-primary btn-sm">View</a>
+                            <a href="{% url 'delete_document' pk=document.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No documents uploaded yet.</p>
+                <a href="{% url 'upload_document' %}" class="btn btn-primary">Upload Document</a>
+            {% endif %}
+        </div>
+
+        <!-- Parcels List -->
+        <div class="dashboard-section">
+            <h2><i class="fas fa-map-marker-alt"></i> Your Parcels</h2>
+            {% if parcels %}
+                <ul class="parcel-list">
+                    {% for parcel in parcels %}
+                        <li>
+                            <strong>{{ parcel.name }}</strong> - {{ parcel.location }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No parcels registered yet.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar and Activity sections -->
+        <div class="dashboard-main">
+            <div class="dashboard-section">
+                <h2><i class="fas fa-calendar-alt"></i> Recent Activity</h2>
+                <div class="activity-feed">
+                    <div class="activity-item">
+                        <div class="activity-time">10:30 AM</div>
+                        <div class="activity-content">
+                            <strong>System Update</strong> completed successfully
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">9:15 AM</div>
+                        <div class="activity-content">
+                            <strong>New user</strong> johndoe registered
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">Yesterday</div>
+                        <div class="activity-content">
+                            <strong>Backup</strong> process completed
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-section">
+                <h2><i class="fas fa-chart-bar"></i> Statistics</h2>
+                <div class="chart-container">
+                    <div class="chart-placeholder">
+                        <p>Monthly performance chart would appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-sidebar">
+            <div class="sidebar-section">
+                <h3>Quick Actions</h3>
+                <ul class="quick-actions">
+                    <li><a href="#"><i class="fas fa-plus"></i> Add New Item</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#"><i class="fas fa-download"></i> Export Data</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Recent Notifications</h3>
+                <div class="notification-item new">
+                    <p>System maintenance scheduled for Friday</p>
+                    <span class="notification-time">2 hours ago</span>
+                </div>
+                <div class="notification-item">
+                    <p>New feature available: Advanced reporting</p>
+                    <span class="notification-time">1 day ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .document-list, .parcel-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    .document-list li, .parcel-list li {
+        padding: 8px 10px;
+        border-bottom: 1px solid #ecf0f1;
+    }
+</style>
+{% endblock %}

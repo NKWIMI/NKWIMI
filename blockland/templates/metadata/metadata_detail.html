@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2>Metadata Version {{ metadata.version_number }}</h2>
+        <h4>For Parcel: {{ metadata.parcel.land_id }}</h4>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>IPFS Hash:</strong> {{ metadata.ipfs_hash }}</p>
+                        <p><strong>Created:</strong> {{ metadata.timestamp }}</p>
+                        <p><strong>Creator:</strong> {{ metadata.creator.username }}</p>
+                        
+                        {% if metadata.description %}
+                        <div class="mt-3">
+                            <h6>Description:</h6>
+                            <p>{{ metadata.description }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Verification</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if verification.0 %}
+                            <div class="alert alert-success">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Verified on blockchain
+                                <ul class="mt-2">
+                                    <li>Version: {{ verification.1.blockchain_version }}</li>
+                                    <li>Timestamp: {{ verification.1.timestamp }}</li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                Verification failed: {{ verification.1.error }}
+                            </div>
+                        {% endif %}
+                        
+                        {% if metadata.document %}
+                        <div class="mt-3">
+                            <a href="{{ metadata.document.url }}" 
+                               class="btn btn-primary"
+                               target="_blank">
+                                Download Document
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockland Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(120deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .card-body {
+            padding: 2.5rem;
+        }
+        .section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #0d6efd;
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.8rem;
+        }
+        .form-label.required:after {
+            content: " *";
+            color: #dc3545;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        .invalid-feedback {
+            display: block;
+            font-size: 0.875rem;
+        }
+        .btn-primary {
+            background: linear-gradient(120deg, #4b6cb7 0%, #182848 100%);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(120deg, #182848 0%, #4b6cb7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .icon-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        h2 {
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        .file-upload-area {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6 !important;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .file-upload-area:hover {
+            background: #e9ecef;
+            border-color: #0d6efd !important;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .text-muted {
+            font-size: 0.9rem;
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+        }
+        .agreement-check {
+            margin-bottom: 10px;
+        }
+        .agreement-error {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .agreement-section {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .agreement-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #495057;
+        }
+        .agreement-content {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card shadow-lg">
+                    <div class="card-header">
+                        <div class="icon-container">
+                            <i class="bi bi-person-plus-fill fs-3"></i>
+                        </div>
+                        <h2 class="fw-bold mb-2">Create Your Blockland Account</h2>
+                        <p class="mb-0">Join the blockchain property revolution</p>
+                    </div>
+                    
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" novalidate class="needs-validation">
+                            <!-- Account Information Section -->
+                            <div class="section mb-4">
+                                <h4 class="text-primary mb-4 border-bottom pb-2">
+                                    <i class="bi bi-person-badge me-2"></i>Account Information
+                                </h4>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="username" class="form-label fw-semibold required">Username</label>
+                                        <input type="text" class="form-control" id="username" placeholder="Choose a username" required>
+                                        <div class="form-text">Must be 3-20 characters long</div>
+                                        <div class="invalid-feedback">Please choose a username.</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label fw-semibold required">Email</label>
+                                        <input type="email" class="form-control" id="email" placeholder="your@email.com" required>
+                                        <div class="invalid-feedback">Please provide a valid email.</div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="password1" class="form-label fw-semibold required">Password</label>
+                                        <input type="password" class="form-control" id="password1" placeholder="Create a password" required>
+                                        <div class="form-text">
+                                            <i class="bi bi-shield-check me-1"></i>At least 8 characters with numbers and symbols
+                                        </div>
+                                        <div class="invalid-feedback">Please provide a valid password.</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="password2" class="form-label fw-semibold required">Confirm Password</label>
+                                        <input type="password" class="form-control" id="password2" placeholder="Confirm your password" required>
+                                        <div class="invalid-feedback">Passwords must match.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Details Section -->
+                            <div class="section mb-4">
+                                <h4 class="text-primary mb-4 border-bottom pb-2">
+                                    <i class="bi bi-person-lines-fill me-2"></i>Profile Details
+                                </h4>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone_number" class="form-label fw-semibold required">Phone Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                            <input type="text" class="form-control" id="phone_number" placeholder="+1234567890" value="+1234567890" required>
+                                        </div>
+                                        <div class="form-text">Format: +[country code][number]</div>
+                                        <div class="invalid-feedback">Phone number is required.</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="country" class="form-label fw-semibold required">Country</label>
+                                        <select class="form-select" id="country" required>
+                                            <option value="" selected disabled>Select your country</option>
+                                            <option value="US">United States</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="DE">Germany</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select your country.</div>
+                                    </div>
+                                </div>
+
+                                <!-- Physical Address - TEXTAREA -->
+                                <div class="mb-4">
+                                    <label for="physical_address" class="form-label fw-semibold required">
+                                        <i class="bi bi-geo-alt me-1"></i>Physical Address
+                                    </label>
+                                    <textarea class="form-control" id="physical_address" rows="4" placeholder="Enter your complete physical address including street, city, state, and postal code" required></textarea>
+                                    <div class="form-text mt-2">
+                                        <i class="bi bi-info-circle me-1"></i>Please provide your full address for identity verification purposes
+                                    </div>
+                                    <div class="invalid-feedback">Please provide your physical address.</div>
+                                </div>
+
+                                <!-- Government ID Upload - FILE INPUT -->
+                                <div class="mb-3">
+                                    <label for="government_id" class="form-label fw-semibold required">
+                                        <i class="bi bi-file-earmark-arrow-up me-1"></i>Government ID Upload
+                                    </label>
+                                    
+                                    <!-- Custom file input styling -->
+                                    <div class="file-upload-area" id="fileUploadArea">
+                                        <div class="mb-2">
+                                            <i class="bi bi-cloud-upload fs-1 text-muted"></i>
+                                        </div>
+                                        <p class="text-muted mb-2">Drag & drop your file here or click to browse</p>
+                                        
+                                        <!-- Custom browse button -->
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="browseButton">
+                                            <i class="bi bi-folder2-open me-1"></i>Browse Files
+                                        </button>
+                                        
+                                        <!-- File name display -->
+                                        <div id="file-name-display" class="mt-2 small text-muted" style="display: none;">
+                                            Selected file: <span id="selected-file-name"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i>Upload a clear scan of your government-issued ID (PDF, JPG, or PNG, max 5MB)
+                                    </div>
+                                    <div class="invalid-feedback">Please upload your government ID.</div>
+                                </div>
+                            </div>
+
+                            <!-- Terms and Privacy Agreement -->
+                            <div class="section mb-4">
+                                <h4 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="bi bi-shield-check me-2"></i>Agreements
+                                </h4>
+                                
+                                <!-- Terms of Service Agreement -->
+                                <div class="agreement-section">
+                                    <div class="form-check agreement-check">
+                                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                        <label class="form-check-label" for="termsCheck">
+                                            I agree to the <a href="registration/templates/registration/terms_of_service.html" class="text-primary">Terms of Service</a> and <a href="registration/templates/registration/privacy_partial.html" class="text-primary">Privacy Policy</a>
+                                        </label>
+                                        <div class="agreement-error" id="termsError">
+                                            You must agree to the terms and conditions
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Privacy Agreement -->
+                                <div class="agreement-section">
+                                    <h5 class="agreement-title">Privacy Agreement</h5>
+                                    <div class="agreement-content">
+                                        <div class="form-check agreement-check">
+                                            <input class="form-check-input" type="checkbox" id="privacyCheck" required>
+                                            <label class="form-check-label" for="privacyCheck">
+                                                I have read and agree to the <a href="registration/templates/registration/privacy_partial.html" class="text-primary">Privacy Policy</a>
+                                            </label>
+                                            <div class="agreement-error" id="privacyError">
+                                                You must agree to our privacy policy
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-0 small">
+                                        We value your privacy and are committed to protecting your personal information.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg py-3">
+                                    <i class="bi bi-person-plus-fill me-2"></i>Create Account
+                                </button>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <p class="text-muted">
+                                    Already have an account? 
+                                    <a href="#" class="text-decoration-none fw-semibold">Sign In</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            
+            const forms = document.querySelectorAll('.needs-validation')
+            
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    // Check main form validity
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    
+                    // Check agreement checkboxes
+                    const termsCheck = document.getElementById('termsCheck');
+                    const privacyCheck = document.getElementById('privacyCheck');
+                    let isValid = true;
+                    
+                    if (!termsCheck.checked) {
+                        document.getElementById('termsError').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('termsError').style.display = 'none';
+                    }
+                    
+                    if (!privacyCheck.checked) {
+                        document.getElementById('privacyError').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('privacyError').style.display = 'none';
+                    }
+                    
+                    if (!isValid) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // File upload functionality
+        const fileUploadArea = document.querySelector('.file-upload-area');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const selectedFileName = document.getElementById('selected-file-name');
+        const browseButton = document.getElementById('browseButton');
+
+        fileUploadArea.addEventListener('click', function(e) {
+            if (e.target !== browseButton) {
+                simulateFileSelection();
+            }
+        });
+
+        browseButton.addEventListener('click', simulateFileSelection);
+
+        function simulateFileSelection() {
+            // Simulate file selection
+            const fakeFile = "government_id_document.pdf";
+            selectedFileName.textContent = fakeFile;
+            fileNameDisplay.style.display = 'block';
+            
+            // Visual feedback
+            fileUploadArea.style.borderColor = "#198754";
+            fileUploadArea.style.backgroundColor = "#f8fff9";
+            
+            setTimeout(() => {
+                fileUploadArea.style.borderColor = "";
+                fileUploadArea.style.backgroundColor = "";
+            }, 1000);
+        }
+
+        // Phone number formatting
+        document.getElementById('phone_number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value && !value.startsWith('+')) {
+                value = '+' + value;
+            }
+            e.target.value = value;
+        });
+
+        // Simple animation for form elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = document.querySelectorAll('.form-control, .form-select, .file-upload-area');
+            formElements.forEach((element, index) => {
+                element.style.opacity = "0";
+                element.style.transform = "translateY(10px)";
+                setTimeout(() => {
+                    element.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+                    element.style.opacity = "1";
+                    element.style.transform = "translateY(0)";
+                }, 100 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{# registration/templates/registration/terms_of_service #}
+<div class="terms-agreement mb-4">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="agreeTerms" name="agree_terms" required>
+        <label class="form-check-label" for="agreeTerms">
+            I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+            and <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+        </label>
+        <div class="invalid-feedback">
+            You must agree to the terms and conditions
+        </div>
+    </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Blockland Terms of Service</h4>
+                <p><strong>Last Updated: August 19, 2025</strong></p>
+                
+                <h5>1. Acceptance of Terms</h5>
+                <p>By accessing or using Blockland, you agree to be bound by these Terms of Service.</p>
+                
+                <h5>2. Blockchain Transactions</h5>
+                <p>All property transactions are recorded on the blockchain and are irreversible.</p>
+                
+                <h5>3. User Responsibilities</h5>
+                <p>You are responsible for maintaining the security of your account and private keys.</p>
+                
+                <h5>4. Limitation of Liability</h5>
+                <p>Blockland is not responsible for losses due to blockchain network issues or user error.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Privacy Policy</h4>
+                <p><strong>Last Updated: August 19, 2025</strong></p>
+                
+                <h5>1. Information We Collect</h5>
+                <p>We collect information you provide during registration and property transactions.</p>
+                
+                <h5>2. Blockchain Data</h5>
+                <p>Property ownership and transaction data are publicly visible on the blockchain.</p>
+                
+                <h5>3. Data Security</h5>
+                <p>We implement industry-standard security measures to protect your information.</p>
+                
+                <h5>4. Your Rights</h5>
+                <p>You can request access to or deletion of your personal data at any time.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

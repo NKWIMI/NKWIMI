@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h2>Delete Parcel</h2>
+        </div>
+        <div class="card-body">
+            <p class="lead">Are you sure you want to delete this parcel?</p>
+            
+            {% if parcel.transaction_hash %}
+            <div class="alert alert-info">
+                <strong>Note:</strong> This parcel is registered on the blockchain. 
+                The blockchain record will remain immutable, but the local database entry will be removed.
+            </div>
+            {% endif %}
+            
+            <div class="alert alert-warning">
+                <strong>Warning:</strong> This action cannot be undone. The parcel will be permanently deleted from the local database.
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Parcel Details:</h5>
+                    <p><strong>Parcel ID:</strong> {{ parcel.land_id }}</p>
+                    <p><strong>Owner:</strong> {{ parcel.owner.username }}</p>
+                    <p><strong>Location:</strong> {{ parcel.location }}</p>
+                    <p><strong>Size:</strong> {{ parcel.size }} sq.m</p>
+                    {% if parcel.transaction_hash %}
+                    <p><strong>Blockchain TX:</strong> {{ parcel.transaction_hash|truncatechars:20 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="confirmation" class="form-label">
+                        Type "DELETE" to confirm:
+                    </label>
+                    <input type="text" class="form-control" id="confirmation" name="confirmation" 
+                           required pattern="DELETE" oninput="validateConfirmation()">
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger" id="delete-btn" disabled>
+                        <i class="fas fa-trash"></i> Confirm Delete
+                    </button>
+                    <a href="{% url 'parcel:parcel_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function validateConfirmation() {
+    const input = document.getElementById('confirmation');
+    const button = document.getElementById('delete-btn');
+    button.disabled = input.value !== 'DELETE';
+}
+</script>
+{% endblock %}

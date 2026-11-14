@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h1>Parcel Details: {{ parcel.land_id }}</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Blockchain Owner Address: {{ parcel.owner_address }}</h5>
+            
+            {% if parcel.owner %}
+                <p class="card-text"><strong>Registered Owner:</strong> {{ parcel.owner.username }}</p>
+                <p class="card-text"><strong>Email:</strong> {{ parcel.owner.email }}</p>
+            {% else %}
+                <p class="card-text"><strong>Registered Owner:</strong> Not assigned</p>
+            {% endif %}
+            
+            <p class="card-text"><strong>Location:</strong> {{ parcel.coordinates|default:"Not specified" }}</p>
+            <p class="card-text"><strong>Size:</strong> {{ parcel.size_sqm|default:"0" }} sq.m</p>
+            <p class="card-text"><strong>Created:</strong> {{ parcel.created_at|date:"Y-m-d H:i" }}</p>
+            <p class="card-text"><strong>Last Updated:</strong> {{ parcel.updated_at|date:"Y-m-d H:i" }}</p>
+            
+            <p class="card-text"><strong>Status:</strong> 
+                <span class="badge bg-{% if parcel.is_frozen %}danger{% else %}success{% endif %}">
+                    {% if parcel.is_frozen %}Frozen{% else %}Active{% endif %}
+                </span>
+            </p>
+            
+            {% if parcel.transaction_hash %}
+                <p class="card-text"><strong>Blockchain TX:</strong> 
+                    <code>{{ parcel.transaction_hash|truncatechars:20 }}</code>
+                </p>
+            {% endif %}
+            
+            {% if parcel.latest_ipfs_hash %}
+                <p class="card-text"><strong>Latest IPFS Hash:</strong> 
+                    <code>{{ parcel.latest_ipfs_hash }}</code>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if can_edit %}
+        <div class="alert alert-info">
+            <i class="fas fa-edit"></i> You have permission to edit this parcel.
+            <a href="{% url 'parcel:parcel_update' parcel.pk %}" class="btn btn-sm btn-primary ms-2">
+                <i class="fas fa-edit"></i> Edit Parcel
+            </a>
+        </div>
+    {% endif %}
+
+    <h3>Metadata History</h3>
+    {% if parcel.metadata_versions.all %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>IPFS Hash</th>
+                        <th>Uploaded By</th>
+                        <th>Date</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for metadata in parcel.metadata_versions.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><code>{{ metadata.short_hash }}</code></td>
+                        <td>{{ metadata.uploader.username|default:"System" }}</td>
+                        <td>{{ metadata.created_at|date:"Y-m-d H:i" }}</td>
+                        <td>{{ metadata.notes|truncatechars:50 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">No metadata history available.</p>
+    {% endif %}
+    
+    <div class="mt-4">
+        <a href="{% url 'parcel:parcel_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Parcel List
+        </a>
+        <a href="{% url 'profile:user_dashboard' %}" class="btn btn-outline-secondary ms-2">
+            <i class="fas fa-home"></i> Back to Dashboard
+        </a>
+        
+        {% if can_edit %}
+        <a href="{% url 'parcel:parcel_update' parcel.pk %}" class="btn btn-primary ms-2">
+            <i class="fas fa-edit"></i> Edit Parcel
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

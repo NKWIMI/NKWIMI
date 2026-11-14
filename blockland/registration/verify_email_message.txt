@@ -1,0 +1,9 @@
+Hello {{ user.username }},
+
+Please click the following link to verify your email address:
+
+{{ verification_url }}
+
+If you didn't request this, please ignore this email.
+
+The Blockland Team

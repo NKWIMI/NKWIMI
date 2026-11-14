@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Initiate Transfer - Blockland{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">
+                        {% if user.is_staff or user.is_superuser %}
+                            Admin: Initiate Property Transfer
+                        {% else %}
+                            Initiate Property Transfer
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Display for Admin ONLY - Shows ALL users dropdown -->
+                        {% if user.is_staff or user.is_superuser %}
+                        <div class="form-group mb-3">
+                            <label class="form-label"><strong>Select Parcel Owner</strong></label>
+                            <select class="form-select" id="parcelOwnerSelect">
+                                <option value="">-- Select a user --</option>
+                                {% for user_obj in form.fields.recipient.queryset %}
+                                <option value="{{ user_obj.id }}" data-address="{{ user_obj.blockchain_address }}">
+                                    {{ user_obj.username }} ({{ user_obj.blockchain_address }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <small class="form-text text-muted">
+                                Choose the user who owns the parcel you want to transfer
+                            </small>
+                        </div>
+                        {% else %}
+                        <!-- Display for Regular User ONLY - Shows their own address -->
+                        <div class="form-group mb-3">
+                            <label class="form-label"><strong>Your Blockchain Address</strong></label>
+                            <input type="text" class="form-control" value="{{ user.blockchain_address }}" readonly>
+                            <small class="form-text text-muted">
+                                Current owner: {{ user.username }}
+                            </small>
+                        </div>
+                        {% endif %}
+
+                        <!-- Display Recipient's Address -->
+                        <div class="form-group mb-3">
+                            <label class="form-label"><strong>Recipient's Blockchain Address</strong></label>
+                            <input type="text" class="form-control" id="recipientAddressDisplay" readonly>
+                            <small class="form-text text-muted" id="recipientInfoDisplay">
+                                Select a recipient from the dropdown below
+                            </small>
+                        </div>
+
+                        <!-- Existing form fields -->
+                        {{ form|crispy }}
+                        
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Initiate Transfer
+                            </button>
+                            <a href="{% url 'transfer:transfer_list' %}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateParcelDropdown(ownerId) {
+    if (!ownerId) return;
+    
+    // Make AJAX request to get parcels for the selected owner
+    fetch(`/api/parcels/by-owner/${ownerId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const parcelSelect = document.getElementById('id_parcel');
+            if (!parcelSelect) return;
+            
+            parcelSelect.innerHTML = ''; // Clear existing options
+            
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select a parcel';
+            parcelSelect.appendChild(defaultOption);
+            
+            // Add new options
+            if (data.success && data.parcels) {
+                data.parcels.forEach(parcel => {
+                    const option = document.createElement('option');
+                    option.value = parcel.id;
+                    option.textContent = `${parcel.land_id} (${parcel.size_sqm} sqm)`;
+                    parcelSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => console.error('Error loading parcels:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const recipientSelect = document.getElementById('id_recipient');
+    const recipientAddressDisplay = document.getElementById('recipientAddressDisplay');
+    const recipientInfoDisplay = document.getElementById('recipientInfoDisplay');
+    
+    {% if user.is_staff or user.is_superuser %}
+    const parcelOwnerSelect = document.getElementById('parcelOwnerSelect');
+    
+    // Parse all users data
+    const allUsersMap = {};
+    {% for user_obj in form.fields.recipient.queryset %}
+    allUsersMap['{{ user_obj.id }}'] = {
+        address: '{{ user_obj.blockchain_address }}',
+        username: '{{ user_obj.username }}'
+    };
+    {% endfor %}
+
+    // Function to filter recipients (exclude selected parcel owner)
+    function filterRecipients(ownerId) {
+        // Clear current options
+        while (recipientSelect.options.length > 0) {
+            recipientSelect.remove(0);
+        }
+        
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select a recipient';
+        recipientSelect.appendChild(defaultOption);
+        
+        // Add filtered recipients (exclude the parcel owner)
+        Object.keys(allUsersMap).forEach(userId => {
+            if (!ownerId || userId !== ownerId) {
+                const user = allUsersMap[userId];
+                const option = document.createElement('option');
+                option.value = userId;
+                option.textContent = `${user.username} (${user.address})`;
+                option.setAttribute('data-address', user.address);
+                recipientSelect.appendChild(option);
+            }
+        });
+        
+        // Update recipient address display
+        updateRecipientAddress();
+    }
+
+    // Event listener for parcel owner selection
+    parcelOwnerSelect.addEventListener('change', function() {
+        const selectedOwnerId = this.value;
+        
+        if (selectedOwnerId) {
+            // Filter parcels to show only those owned by selected user
+            updateParcelDropdown(selectedOwnerId);
+            // Filter recipients to exclude the selected parcel owner
+            filterRecipients(selectedOwnerId);
+        } else {
+            // Reset to show all parcels and recipients
+            updateParcelDropdown(null);
+            filterRecipients(null);
+        }
+    });
+
+    // Initial filtering
+    updateParcelDropdown(null);
+    filterRecipients(null);
+    {% endif %}
+
+    // Function to update recipient address display
+    function updateRecipientAddress() {
+        const selectedUserId = recipientSelect.value;
+        const selectedOption = recipientSelect.options[recipientSelect.selectedIndex];
+        
+        if (selectedUserId && selectedOption.getAttribute('data-address')) {
+            recipientAddressDisplay.value = selectedOption.getAttribute('data-address');
+            recipientInfoDisplay.textContent = 'Recipient: ' + selectedOption.text.split(' (')[0];
+        } else {
+            recipientAddressDisplay.value = '';
+            recipientInfoDisplay.textContent = selectedUserId ? 
+                'Address not available for selected recipient' : 
+                'Select a recipient from the dropdown below';
+        }
+    }
+
+    // Event listeners
+    if (recipientSelect) {
+        recipientSelect.addEventListener('change', updateRecipientAddress);
+    }
+    
+    // Initial calls
+    updateRecipientAddress();
+});
+</script>
+{% endblock %}

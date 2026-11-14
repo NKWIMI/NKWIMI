@@ -1,0 +1,299 @@
+{# registration/templates/registration/privacy_partial.html #}
+<div class="privacy-agreement mb-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent border-0">
+            <h6 class="mb-0 text-primary">
+                <i class="bi bi-shield-check me-2"></i>Privacy Agreement
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="agreePrivacy" name="agree_privacy" required>
+                <label class="form-check-label" for="agreePrivacy">
+                    I have read and agree to the 
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal" class="text-decoration-none">
+                        Privacy Policy
+                    </a>
+                </label>
+                <div class="invalid-feedback">
+                    You must agree to our privacy policy
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    We value your privacy and are committed to protecting your personal information.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="privacyModalLabel">
+                    <i class="bi bi-shield-lock me-2"></i>Privacy Policy
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-content">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-shield-lock text-primary fs-1"></i>
+                        </div>
+                        <h3 class="text-primary mb-2">Blockland Privacy Policy</h3>
+                        <p class="text-muted"><strong>Last Updated: August 19, 2025</strong></p>
+                    </div>
+
+                    <!-- Introduction -->
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        This Privacy Policy describes how Blockland collects, uses, and protects your information.
+                    </div>
+
+                    <!-- Policy Sections -->
+                    <div class="privacy-sections">
+                        <!-- Section 1 -->
+                        <div class="privacy-section mb-4">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <span class="badge bg-primary me-3">1</span>
+                                Information We Collect
+                            </h5>
+                            <div class="ps-5">
+                                <p class="mb-2">We collect the following types of information:</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item border-0 px-0">
+                                        <i class="bi bi-person-circle text-primary me-2"></i>
+                                        <strong>Personal Information:</strong> Name, email, contact details
+                                    </li>
+                                    <li class="list-group-item border-0 px-0">
+                                        <i class="bi bi-wallet2 text-primary me-2"></i>
+                                        <strong>Blockchain Data:</strong> Wallet addresses, transaction history
+                                    </li>
+                                    <li class="list-group-item border-0 px-0">
+                                        <i class="bi bi-geo-alt text-primary me-2"></i>
+                                        <strong>Usage Data:</strong> IP address, browser type, device information
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Section 2 -->
+                        <div class="privacy-section mb-4">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <span class="badge bg-primary me-3">2</span>
+                                How We Use Your Information
+                            </h5>
+                            <div class="ps-5">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-start mb-3">
+                                            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                                            <span>Account creation and management</span>
+                                        </div>
+                                        <div class="d-flex align-items-start mb-3">
+                                            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                                            <span>Property transactions and ownership</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-start mb-3">
+                                            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                                            <span>Customer support and communication</span>
+                                        </div>
+                                        <div class="d-flex align-items-start mb-3">
+                                            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                                            <span>Platform security and improvements</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3 -->
+                        <div class="privacy-section mb-4">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <span class="badge bg-primary me-3">3</span>
+                                Blockchain Transparency
+                            </h5>
+                            <div class="ps-5">
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <strong>Important:</strong> Property ownership and transaction data are publicly visible on the blockchain and cannot be modified or deleted.
+                                </div>
+                                <p>While we protect your personal information, blockchain transactions are inherently public and permanent.</p>
+                            </div>
+                        </div>
+
+                        <!-- Section 4 -->
+                        <div class="privacy-section mb-4">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <span class="badge bg-primary me-3">4</span>
+                                Data Security
+                            </h5>
+                            <div class="ps-5">
+                                <div class="security-features">
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <div class="bg-light rounded p-3 mb-2">
+                                                <i class="bi bi-encrypt text-primary fs-4"></i>
+                                            </div>
+                                            <small>Encryption</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="bg-light rounded p-3 mb-2">
+                                                <i class="bi bi-shield-check text-primary fs-4"></i>
+                                            </div>
+                                            <small>Access Controls</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="bg-light rounded p-3 mb-2">
+                                                <i class="bi bi-eye-slash text-primary fs-4"></i>
+                                            </div>
+                                            <small>Data Minimization</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 5 -->
+                        <div class="privacy-section mb-4">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <span class="badge bg-primary me-3">5</span>
+                                Your Rights
+                            </h5>
+                            <div class="ps-5">
+                                <div class="rights-list">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-eye text-primary me-2"></i>
+                                        <span>Right to access your personal data</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-pencil text-primary me-2"></i>
+                                        <span>Right to correct inaccurate information</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-trash text-primary me-2"></i>
+                                        <span>Right to request data deletion (where possible)</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-x-circle text-primary me-2"></i>
+                                        <span>Right to object to data processing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 6 -->
+                        <div class="privacy-section">
+                            <h5 class="text-primary d-flex align-items-center">
+                                <span class="badge bg-primary me-3">6</span>
+                                Contact Information
+                            </h5>
+                            <div class="ps-5">
+                                <p>For privacy-related questions or concerns, please contact our Data Protection Officer:</p>
+                                <div class="contact-info">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-envelope text-primary me-2"></i>
+                                        <span>privacy@blockland.com</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-clock text-primary me-2"></i>
+                                        <span>Response within 48 business hours</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Note -->
+                    <div class="mt-4 pt-3 border-top">
+                        <p class="text-muted small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            By using Blockland, you acknowledge that you have read and understood this Privacy Policy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('agreePrivacy').checked = true; $('#privacyModal').modal('hide');">
+                    <i class="bi bi-check-circle me-1"></i>I Understand
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.privacy-content {
+    line-height: 1.6;
+}
+
+.privacy-section {
+    border-left: 4px solid #0d6efd;
+    padding-left: 1rem;
+}
+
+.privacy-section h5 {
+    font-weight: 600;
+}
+
+.list-group-item {
+    background: transparent;
+    padding: 0.5rem 0;
+}
+
+.security-features .bg-light {
+    transition: all 0.3s ease;
+}
+
+.security-features .bg-light:hover {
+    background: #e9ecef !important;
+    transform: translateY(-2px);
+}
+
+.rights-list i {
+    min-width: 20px;
+}
+
+.contact-info i {
+    min-width: 20px;
+}
+
+.badge {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+</style>
+
+<script>
+// Auto-scroll to top when modal opens
+$('#privacyModal').on('shown.bs.modal', function () {
+    $(this).find('.modal-body').scrollTop(0);
+});
+
+// Add smooth scrolling for anchor links within modal
+$('#privacyModal').on('click', 'a[href^="#"]', function(e) {
+    e.preventDefault();
+    var target = $(this.getAttribute('href'));
+    if(target.length) {
+        $('#privacyModal').find('.modal-body').animate({
+            scrollTop: target.offset().top - 20
+        }, 1000);
+    }
+});
+</script>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Search - Blockchain Explorer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background-color: var(--dark-color);
+        }
+        
+        .search-container {
+            background: linear-gradient(135deg, #1a3a8f, #0d6efd);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+        
+        .result-item {
+            border-left: 4px solid transparent;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+        
+        .result-item:hover {
+            border-left-color: var(--primary-color);
+            background-color: #e9ecef;
+        }
+        
+        .hash-text {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--secondary-color);
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #dee2e6;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-link-45deg"></i> Blockchain Explorer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-search"></i> Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-list-check"></i> Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-arrow-repeat"></i> Sync</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light me-2"><i class="bi bi-person-circle"></i> Account</a>
+                    <a href="#" class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Section -->
+    <div class="search-container">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-4">Blockchain Explorer</h1>
+            <p class="lead mb-4">Search for blocks, transactions, and addresses on the blockchain</p>
+            
+            <form method="GET" action="">
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" placeholder="Search by block height, hash, transaction, or address" 
+                           name="q" value="{{ search_query }}">
+                    <button class="btn btn-warning" type="submit">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="container">
+        {% if search_query %}
+            {% if has_results %}
+                <!-- Blocks Results -->
+                {% if blocks %}
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-cube"></i> Blocks ({{ blocks|length }})
+                    </div>
+                    <div class="card-body">
+                        {% for block in blocks %}
+                        <div class="result-item">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-1">Block #{{ block.height }}</h5>
+                                <span class="badge bg-success">{{ block.transaction_count }} Transactions</span>
+                            </div>
+                            <p class="mb-1 hash-text">Hash: {{ block.hash }}</p>
+                            <small class="text-muted">Mined on {{ block.timestamp|date:"M d, Y H:i:s" }}</small>
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Transactions Results -->
+                {% if transactions %}
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-arrow-left-right"></i> Transactions ({{ transactions|length }})
+                    </div>
+                    <div class="card-body">
+                        {% for tx in transactions %}
+                        <div class="result-item">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-1">Transaction</h5>
+                                <span class="badge bg-info">{{ tx.value }} ETH</span>
+                            </div>
+                            <p class="mb-1 hash-text">Hash: {{ tx.tx_hash }}</p>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <strong>From:</strong> 
+                                    <span class="hash-text">{{ tx.sender }}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>To:</strong> 
+                                    <span class="hash-text">{{ tx.recipient }}</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            {% else %}
+                <!-- No Results -->
+                <div class="card">
+                    <div class="no-results">
+                        <i class="bi bi-search"></i>
+                        <h3>No results found</h3>
+                        <p>We couldn't find any blocks or transactions matching "{{ search_query }}"</p>
+                        <p class="text-muted">Try searching by block height, block hash, transaction hash, or address</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <!-- Initial State -->
+            <div class="card">
+                <div class="no-results">
+                    <i class="bi bi-search-heart"></i>
+                    <h3>Start Exploring the Blockchain</h3>
+                    <p>Enter a block height, block hash, transaction hash, or address in the search box above</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="mb-0">Blockchain Explorer &copy; 2023 | Powered by Web3.py</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

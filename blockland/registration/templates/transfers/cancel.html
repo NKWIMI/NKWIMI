@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Initiate Transfer - Blockland{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">
+                        {% if user.is_staff or user.is_superuser %}
+                            Admin: Initiate Property Transfer
+                        {% else %}
+                            Initiate Property Transfer
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Display for Admin ONLY - Shows selected parcel owner's address -->
+                        {% if user.is_staff or user.is_superuser %}
+                        <div class="form-group mb-3">
+                            <label class="form-label"><strong>Selected Parcel Owner's Address</strong></label>
+                            <input type="text" class="form-control" id="parcelOwnerAddressDisplay" readonly>
+                            <small class="form-text text-muted" id="parcelOwnerInfoDisplay">
+                                Select a parcel to see owner's address
+                            </small>
+                        </div>
+                        {% else %}
+                        <!-- Display for Regular User ONLY - Shows their own address -->
+                        <div class="form-group mb-3">
+                            <label class="form-label"><strong>Your Blockchain Address</strong></label>
+                            <input type="text" class="form-control" value="{{ user.blockchain_address }}" readonly>
+                            <small class="form-text text-muted">
+                                Current owner: {{ user.username }}
+                            </small>
+                        </div>
+                        {% endif %}
+
+                        <!-- Display Recipient's Address (for both admin and regular users) -->
+                        <div class="form-group mb-3">
+                            <label class="form-label"><strong>Recipient's Blockchain Address</strong></label>
+                            <input type="text" class="form-control" id="recipientAddressDisplay" readonly>
+                            <small class="form-text text-muted" id="recipientInfoDisplay">
+                                Select a recipient from the dropdown below
+                            </small>
+                        </div>
+
+                        <!-- Existing form fields -->
+                        {{ form|crispy }}
+                        
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Initiate Transfer
+                            </button>
+                            <a href="{% url 'transfer:transfer_list' %}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const recipientSelect = document.getElementById('id_recipient');
+    const parcelSelect = document.getElementById('id_parcel');
+    const recipientAddressDisplay = document.getElementById('recipientAddressDisplay');
+    const recipientInfoDisplay = document.getElementById('recipientInfoDisplay');
+    
+    {% if user.is_staff or user.is_superuser %}
+    const parcelOwnerAddressDisplay = document.getElementById('parcelOwnerAddressDisplay');
+    const parcelOwnerInfoDisplay = document.getElementById('parcelOwnerInfoDisplay');
+    {% endif %}
+    
+    // Parse recipient address mapping
+    const recipientAddressMap = {};
+    const recipientAddressesData = recipientSelect.getAttribute('data-addresses');
+    if (recipientAddressesData) {
+        recipientAddressesData.split('|').forEach(pair => {
+            const [userId, address] = pair.split(':');
+            recipientAddressMap[userId] = address;
+        });
+    }
+
+    {% if user.is_staff or user.is_superuser %}
+    // Parse parcel owner address mapping for admin
+    const parcelOwnerAddressMap = {};
+    const parcelOwnerInfoMap = {};
+    const parcelAddressesData = parcelSelect.getAttribute('data-owner-addresses');
+    if (parcelAddressesData) {
+        parcelAddressesData.split('|').forEach(pair => {
+            const [parcelId, address, username] = pair.split(':');
+            parcelOwnerAddressMap[parcelId] = address;
+            parcelOwnerInfoMap[parcelId] = username;
+        });
+    }
+    {% endif %}
+
+    // Function to update recipient address display
+    function updateRecipientAddress() {
+        const selectedUserId = recipientSelect.value;
+        const selectedOption = recipientSelect.options[recipientSelect.selectedIndex];
+        
+        if (selectedUserId && recipientAddressMap[selectedUserId]) {
+            recipientAddressDisplay.value = recipientAddressMap[selectedUserId];
+            recipientInfoDisplay.textContent = 'Recipient: ' + selectedOption.text;
+        } else {
+            recipientAddressDisplay.value = '';
+            recipientInfoDisplay.textContent = selectedUserId ? 
+                'Address not available for selected recipient' : 
+                'Select a recipient from the dropdown below';
+        }
+    }
+
+    {% if user.is_staff or user.is_superuser %}
+    // Function to update parcel owner address display (for admin only)
+    function updateParcelOwnerAddress() {
+        const selectedParcelId = parcelSelect.value;
+        
+        if (selectedParcelId && parcelOwnerAddressMap[selectedParcelId]) {
+            parcelOwnerAddressDisplay.value = parcelOwnerAddressMap[selectedParcelId];
+            parcelOwnerInfoDisplay.textContent = 'Parcel Owner: ' + parcelOwnerInfoMap[selectedParcelId];
+        } else {
+            parcelOwnerAddressDisplay.value = '';
+            parcelOwnerInfoDisplay.textContent = 'Select a parcel to see owner\'s address';
+        }
+    }
+    {% endif %}
+
+    // Event listeners
+    recipientSelect.addEventListener('change', updateRecipientAddress);
+    {% if user.is_staff or user.is_superuser %}
+    parcelSelect.addEventListener('change', updateParcelOwnerAddress);
+    {% endif %}
+    
+    // Initial calls
+    updateRecipientAddress();
+    {% if user.is_staff or user.is_superuser %}
+    updateParcelOwnerAddress();
+    {% endif %}
+});
+</script>
+{% endblock %}

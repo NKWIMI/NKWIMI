@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Block {{ block.height }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Block Details</h1>
+    </div>
+    <div class="card-body">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ block.height }}</div>
+                <div class="stat-label">Block Height</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ transactions|length }}</div>
+                <div class="stat-label">Transactions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ block.timestamp|date:"M d, Y" }}</div>
+                <div class="stat-label">Date</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Block Hash</th>
+                    <td class="hash">{{ block.hash }}</td>
+                </tr>
+                <tr>
+                    <th>Parent Hash</th>
+                    <td class="hash">{{ block.parent_hash }}</td>
+                </tr>
+                <tr>
+                    <th>Miner</th>
+                    <td class="hash">{{ block.miner }}</td>
+                </tr>
+                <tr>
+                    <th>Difficulty</th>
+                    <td>{{ block.difficulty }}</td>
+                </tr>
+                <tr>
+                    <th>Gas Used</th>
+                    <td>{{ block.gas_used }}</td>
+                </tr>
+                <tr>
+                    <th>Gas Limit</th>
+                    <td>{{ block.gas_limit }}</td>
+                </tr>
+                <tr>
+                    <th>Timestamp</th>
+                    <td>{{ block.timestamp|date:"M d, Y H:i:s" }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin: 2rem 0 1rem;">
+            <h2>Transactions</h2>
+            <div>
+                {% if previous_block %}
+                    <a href="{% url 'block_detail' height=previous_block.height %}" class="btn btn-secondary btn-sm">Previous Block</a>
+                {% endif %}
+                {% if next_block %}
+                    <a href="{% url 'block_detail' height=next_block.height %}" class="btn btn-secondary btn-sm">Next Block</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if transactions %}
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hash</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in transactions %}
+                        <tr>
+                            <td><a href="{% url 'transaction_detail' tx_hash=tx.tx_hash %}" class="hash hash-short">{{ tx.tx_hash|slice:":16" }}...</a></td>
+                            <td class="hash hash-short">{{ tx.sender|slice:":12" }}...</td>
+                            <td class="hash hash-short">{{ tx.recipient|slice:":12" }}...</td>
+                            <td>{{ tx.value }} ETH</td>
+                            <td>
+                                {% if tx.status %}
+                                    <span class="badge badge-success">Success</span>
+                                {% else %}
+                                    <span class="badge badge-error">Failed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No transactions in this block.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

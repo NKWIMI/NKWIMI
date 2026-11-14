@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold text-primary mb-2">
+                    {% if title %}{{ title }}{% else %}Register New User{% endif %}
+                </h2>
+                <p class="text-muted">Create a new user account with the form below</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Please correct the errors below.</strong>
+                        {{ form.non_field_errors }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                
+                <div class="row">
+                    <!-- Account Information Card -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-lg mb-4">
+                            <div class="card-header bg-primary text-white py-3">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-user-circle me-2"></i>
+                                    Account Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Use Django form rendering for these fields -->
+                                <div class="mb-3">
+                                    <label for="{{ form.username.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-user me-1 text-primary"></i>Username
+                                    </label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.username.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-envelope me-1 text-primary"></i>Email
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.email.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.password1.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-lock me-1 text-primary"></i>Password
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.password1 }}
+                                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="{{ form.password1.id_for_label }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    {% if form.password1.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.password1.errors }}</div>
+                                    {% endif %}
+                                    {% if form.password1.help_text %}
+                                        <div class="form-text">{{ form.password1.help_text }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.password2.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-lock me-1 text-primary"></i>Confirm Password
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.password2 }}
+                                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="{{ form.password2.id_for_label }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    {% if form.password2.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.password2.errors }}</div>
+                                    {% endif %}
+                                    {% if form.password2.help_text %}
+                                        <div class="form-text">{{ form.password2.help_text }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Information Card -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-lg mb-4">
+                            <div class="card-header bg-success text-white py-3">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-address-card me-2"></i>
+                                    Profile Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="{{ form.phone_number.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-phone me-1 text-success"></i>Phone Number
+                                    </label>
+                                    {{ form.phone_number }}
+                                    {% if form.phone_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.phone_number.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.address_text.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-map-marker-alt me-1 text-success"></i>Address
+                                    </label>
+                                    {{ form.address_text }}
+                                    {% if form.address_text.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.address_text.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="{{ form.identity_document.id_for_label }}" class="form-label fw-semibold">
+                                        <i class="fas fa-file-pdf me-1 text-success"></i>Identity Document
+                                    </label>
+                                    <div class="file-input-container">
+                                        {{ form.identity_document }}
+                                        <label for="{{ form.identity_document.id_for_label }}" class="file-input-label">
+                                            <i class="fas fa-upload me-2"></i>Choose file
+                                        </label>
+                                    </div>
+                                    {% if form.identity_document.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.identity_document.errors }}</div>
+                                    {% endif %}
+                                    {% if form.identity_document.help_text %}
+                                        <div class="form-text">{{ form.identity_document.help_text }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if is_admin %}
+                <!-- Admin Settings Card -->
+                <div class="card border-0 shadow-lg mb-4">
+                    <div class="card-header bg-warning text-dark py-3">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-cog me-2"></i>
+                            Admin Settings
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.is_active }}
+                                    <label for="{{ form.is_active.id_for_label }}" class="form-check-label fw-semibold">
+                                        Active Status
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.is_staff }}
+                                    <label for="{{ form.is_staff.id_for_label }}" class="form-check-label fw-semibold">
+                                        Staff Status
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.is_superuser }}
+                                    <label for="{{ form.is_superuser.id_for_label }}" class="form-check-label fw-semibold">
+                                        Superuser Status
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Centered Action Buttons -->
+                <div class="d-flex justify-content-center mt-4">
+                    <div class="text-center">
+                        <a href="{% if is_admin %}{% url 'admin_panel:admin_manage_users' %}{% else %}{% url 'home' %}{% endif %}" 
+                           class="btn btn-outline-secondary me-3">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-user-plus me-1"></i>Create User
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Add CSS to style Django form widgets */
+.styled-input {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    width: 100%;
+}
+
+.styled-input:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.3rem rgba(78, 115, 223, 0.15), 
+                inset 0 2px 4px rgba(0,0,0,0.05);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+/* Style checkboxes */
+.form-check-input {
+    width: 50px !important;
+    height: 26px !important;
+}
+
+.form-check-input:checked {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+/* Style file input */
+input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+/* Ensure all form elements have consistent styling */
+input, textarea, select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #4e73df;
+    outline: none;
+    box-shadow: 0 0 0 0.3rem rgba(78, 115, 223, 0.15);
+}
+
+/* Password input group */
+.input-group {
+    position: relative;
+}
+
+.input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+
+/* The rest of your existing CSS remains the same */
+.card {
+    border-radius: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+}
+
+/* ... keep all your other CSS styles ... */
+</style>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<script>
+// Basic form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+
+// Password visibility toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const passwordInput = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
