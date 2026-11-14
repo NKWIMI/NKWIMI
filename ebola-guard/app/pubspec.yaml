@@ -1,0 +1,52 @@
+name: ebola_guard
+description: Ebola symptom & exposure screening with an AI health-information assistant.
+publish_to: "none"
+version: 1.1.0+3
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"   # Flutter 3.27 or newer
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:   # built-in translations for Flutter's own widgets
+    sdk: flutter
+  http: ^1.2.2
+  shared_preferences: ^2.3.2
+  url_launcher: ^6.3.1
+  speech_to_text: ^7.0.0   # voice input (speech recognition)
+  flutter_tts: ^4.2.0      # voice output (reads answers aloud)
+  flutter_map: ^8.3.1      # OpenStreetMap map (no API key)
+  latlong2: ^0.9.1
+  image_picker: ^1.1.2     # profile picture (camera or gallery)
+  path_provider: ^2.1.4    # where the picture is kept on the phone
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.0   # run: dart run flutter_launcher_icons
+  flutter_native_splash: ^2.4.0     # run: dart run flutter_native_splash:create
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/
+    - assets/data/
+
+# App icon for Android + iOS (generated from assets/icon/*.png)
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#00695C"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  remove_alpha_ios: true
+
+# Splash screen shown while the app starts
+flutter_native_splash:
+  color: "#004D40"
+  image: assets/icon/splash.png
+  android_12:
+    color: "#004D40"
+    image: assets/icon/splash.png

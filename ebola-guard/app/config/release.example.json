@@ -1,0 +1,9 @@
+{
+  "BACKEND_URL": "https://YOUR-BACKEND.onrender.com",
+  "HEALTH_HOTLINE": "",
+  "HEALTH_HOTLINE_LABEL": "Health department hotline",
+  "EMERGENCY_NUMBER": "112",
+  "PRIVACY_POLICY_URL": "https://YOUR-SITE/privacy",
+  "SUPABASE_URL": "",
+  "SUPABASE_ANON_KEY": ""
+}
