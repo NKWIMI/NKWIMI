@@ -135,7 +135,8 @@ export function retrievalOnlyAnswer(hits, { confident, language } = {}) {
       numberByUrl.set(chunk.url, sources.length + 1);
       sources.push(describeSource(chunk, sources.length + 1));
     }
-    const excerpt = clean(chunk.text);
+    // Passages built from HTML lists already start with "• "; drop it so we don't print "• •".
+    const excerpt = clean(chunk.text).replace(/^(?:[•*-]\s*)+/, '');
     const short = excerpt.length > 420 ? `${excerpt.slice(0, 417).replace(/\s+\S*$/, '')}…` : excerpt;
     return `• ${short} [${numberByUrl.get(chunk.url)}]`;
   });

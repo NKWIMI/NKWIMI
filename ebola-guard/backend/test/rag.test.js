@@ -316,3 +316,10 @@ describe('evaluation', () => {
     assert.ok(summary.hitByLanguage.fr);
   });
 });
+
+test('retrieval-only answer never shows a doubled bullet', () => {
+  const hits = [{ chunk: { url: 'https://example.org/a', title: 'A', source: 'WHO', text: '• Fever and chills\n• Headache' } }];
+  const { reply } = retrievalOnlyAnswer(hits, { confident: true, language: 'English' });
+  assert.doesNotMatch(reply, /•\s*•/);
+  assert.match(reply, /• Fever and chills/);
+});
