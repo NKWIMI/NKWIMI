@@ -18,13 +18,36 @@
 - 📄 Co-author of **10 research papers** in computer vision, predictive modelling and explainable AI (XAI)
 - 👨‍🏫 University teaching assistant in programming, software engineering and databases since 2017
 - 🔭 Open to **software developer / AI engineer** roles in Korea
-- 📱 Recently built my first **Android app** (Flutter) for public health in the DR Congo
-- 🌱 Currently learning: putting AI models into production and publishing apps on Google Play
+- 🤖 I build **AI applications end to end**: a tomato quality-inspection web app with a CNN I trained, and a health app whose assistant answers from official WHO/CDC documents (**RAG**) with cited sources
+- 🌱 Currently learning: running AI in production at scale (monitoring, CI/CD) and publishing apps on Google Play
 - 🗣️ French (native) · English (professional) · Korean (basic)
 
 ---
 
 ### 🚀 Featured projects
+
+#### 🩺 [Ebola Guard](https://github.com/NKWIMI/NKWIMI/tree/main/ebola-guard) — Health app with a RAG AI assistant (Android)
+*Mobile health project · 2026*
+
+An Android app that helps people in the DR Congo **check symptoms and exposure, learn prevention, and find the nearest treatment centre**. It is a screening and information tool, not a diagnostic device.
+
+- **Flutter / Dart** app with a guided risk check that gives clear next steps (urgent cases are sent to the hotline and treatment centres)
+- **AI assistant with RAG**: before answering, a **Node.js / Express** backend searches 6 official **WHO/CDC** documents with **hybrid search** (BM25 keywords + multilingual embeddings), then the **Claude API** answers from those passages with **clickable citations**
+- Text and **voice chat** (speech-to-text and text-to-speech), plus rule-based **danger-sign alerts**
+- **Measured results** on 40 test questions in 4 languages: right source in the top 5 for **100%**, ranked first for **94%**; all danger signs flagged with **no false alarms** ([details](https://github.com/NKWIMI/NKWIMI/tree/main/ebola-guard#results--how-well-the-assistant-finds-the-right-source))
+- **6 languages**: French, English, Swahili, **Lingala, Kikongo and Tshiluba**
+- **Outbreak map** (OpenStreetMap), lessons, myth-vs-fact quiz and trusted videos
+- 47 automated tests; backend deployed with **Docker** on Render; Android APK v1.2
+
+#### 🍅 [TomatoGrade](https://github.com/NKWIMI/tomatograde) — Tomato quality inspection with AI
+*Computer vision project · 2026*
+
+A web app that grades tomatoes as **fresh or rotten** from a photo and **shows why**, building on my research on tomato quality grading.
+
+- **PyTorch**: fine-tuned a **MobileNetV3** CNN by transfer learning on **1,986 real tomato photos** (Google Colab GPU)
+- **FastAPI** web app: single and batch grading, **Grad-CAM** heatmaps explaining each decision, a "needs review" flag when the model is unsure
+- Inspection history in **SQLite** with CSV export, and a quality dashboard
+- Packaged with **Docker**; automated tests with **pytest**
 
 #### ⛓️ [BlockLand](https://github.com/NKWIMI/NKWIMI/tree/main/blockland) — Blockchain-Based Land Registration System
 *Master's thesis · Hanyang University ERICA · 2025–2026 · built alone*
@@ -37,19 +60,6 @@ A web application that keeps land records **transparent and tamper-resistant**, 
 - Documents stored on **IPFS** (Pinata) with file hashes recorded on-chain; metadata in **CouchDB**
 - AI-assisted document checks (**TensorFlow**, **OpenCV**, Tesseract OCR)
 - 📘 [Setup guide](https://github.com/NKWIMI/NKWIMI/blob/main/blockland/SETUP.md)
-
-#### 🩺 [Ebola Guard](https://github.com/NKWIMI/NKWIMI/tree/main/ebola-guard) — Ebola screening & prevention app (Android)
-*Mobile health project · 2026*
-
-An Android app that helps people in the DR Congo **check symptoms and exposure, learn prevention, and find the nearest treatment centre**. It is a screening and information tool, not a diagnostic device.
-
-- **Flutter / Dart** app with a guided risk check that gives clear next steps (urgent cases are sent to the hotline and treatment centres)
-- **AI assistant** with text and **voice chat** (speech-to-text and text-to-speech), through a **Node.js / Express** backend calling the **Claude API**, with safety rules
-- **6 languages**: French, English, Swahili, **Lingala, Kikongo and Tshiluba**
-- **Outbreak map** (OpenStreetMap) of affected areas and treatment centres, with directions
-- Lessons, myth-vs-fact quiz, videos and trusted links (WHO, Ministry of Health)
-- Optional account with profile picture; health answers never leave the phone
-- Usability study with university students in Kinshasa (questionnaire based on SUS)
 
 ---
 
@@ -80,6 +90,7 @@ An Android app that helps people in the DR Congo **check symptoms and exposure, 
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white"/>
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/>
   <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white"/>
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white"/>
 </p>
 
 **Data & AI**
@@ -93,6 +104,9 @@ An Android app that helps people in the DR Congo **check symptoms and exposure, 
   <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white"/>
   <img src="https://img.shields.io/badge/Power%20BI-F2C811?style=flat-square&logo=powerbi&logoColor=black"/>
   <img src="https://img.shields.io/badge/Claude%20API-D97757?style=flat-square&logo=anthropic&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black"/>
+  <img src="https://img.shields.io/badge/RAG-6E40C9?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white"/>
 </p>
 
 **Databases**
