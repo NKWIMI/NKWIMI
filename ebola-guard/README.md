@@ -29,7 +29,23 @@ ebola-guard/
 Phone app ──HTTPS──▶ your backend (/api/chat) ──▶ search WHO/CDC library ──▶ Claude API (answer + citations)
    │ offline: screening + info + call buttons work without internet
 ```
+## Results — how well the assistant finds the right source
 
+Measured with `npm run eval` (in `backend/`) on **40 test questions** in 4 languages (English, French, Lingala, Swahili), using hybrid search (BM25 keywords + multilingual embeddings) over **67 passages** from 6 official WHO/CDC documents.
+
+| What is measured | Result |
+|---|---|
+| Right source in the top 5 results | **100%** (34/34) |
+| Right source ranked first | **94%** (32/34) |
+| Mean reciprocal rank (MRR) | **0.966** |
+| Top-5 hit rate by language | EN 23/23 · FR 7/7 · LN 2/2 · SW 2/2 |
+| Danger signs flagged (urgent / emergency) | **100%** (4/4) |
+| False alarms on normal questions | **0%** (0/36) |
+| Off-topic questions recognised | 67% (2/3) |
+
+**Known limitation:** one off-topic question in French (about cryptocurrency) is still matched to a WHO passage instead of being recognised as off-topic. With the AI switched on, the safety instructions still keep the answer on Ebola, but the search threshold for French needs improvement.
+
+The test questions are in `backend/eval/questions.json`; detailed results are written to `backend/eval/results.json`.
 ---
 
 ## Step 1 — Install the tools (one time)
