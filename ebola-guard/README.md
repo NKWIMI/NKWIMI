@@ -41,9 +41,9 @@ Measured with `npm run eval` (in `backend/`) on **40 test questions** in 4 langu
 | Top-5 hit rate by language | EN 23/23 · FR 7/7 · LN 2/2 · SW 2/2 |
 | Danger signs flagged (urgent / emergency) | **100%** (4/4) |
 | False alarms on normal questions | **0%** (0/36) |
-| Off-topic questions recognised | 67% (2/3) |
+| Off-topic questions recognised | **100%** (3/3) |
 
-**Known limitation:** one off-topic question in French (about cryptocurrency) is still matched to a WHO passage instead of being recognised as off-topic. With the AI switched on, the safety instructions still keep the answer on Ebola, but the search threshold for French needs improvement.
+**Fixed with the help of this evaluation:** a French off-topic question (*"Quel est le prix du bitcoin aujourd'hui ?"*) used to be matched to a WHO passage, because common French words like *quel* and *aujourd'hui* were treated as keywords. Adding them to the ignored-word list raised off-topic detection from 67% (2/3) to **100% (3/3)**, with no change to the other scores. Two tests now guard against this.
 
 The test questions are in `backend/eval/questions.json`; detailed results are written to `backend/eval/results.json`.
 ---
