@@ -1,12 +1,12 @@
 {
-  "at": "2026-11-14T09:46:45.569Z",
+  "at": "2026-11-18T01:04:38.474Z",
   "search": "hybrid",
   "summary": {
     "questions": 40,
     "hitAt5": "100% (34/34)",
     "hitAt1": "94% (32/34)",
     "mrr": 0.966,
-    "noAnswerDetected": "67% (2/3)",
+    "noAnswerDetected": "100% (3/3)",
     "alertsCaught": "100% (4/4)",
     "falseAlerts": "0% (0/36)",
     "hitByLanguage": {
@@ -590,7 +590,7 @@
       "top": [
         "who-factsheet-fr",
         "who-factsheet-en",
-        "who-factsheet-en"
+        "who-factsheet-fr"
       ]
     },
     {
@@ -635,9 +635,9 @@
       "question": "Quel est le prix du bitcoin aujourd'hui ?",
       "hit": null,
       "rank": null,
-      "confident": true,
+      "confident": false,
       "answerable": false,
-      "noAnswerOk": false,
+      "noAnswerOk": true,
       "alert": null,
       "alertExpected": null,
       "alertOk": true,

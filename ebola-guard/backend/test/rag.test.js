@@ -13,7 +13,7 @@ import { buildSystemPrompt } from '../prompt.js';
 import { buildQuery, formatCitedReply, retrievalOnlyAnswer, sanitizeMessages, toSearchResultBlocks } from '../src/rag.js';
 import { Retriever } from '../src/retriever.js';
 import { detectRedFlags } from '../src/safety.js';
-import { countWords } from '../src/text.js';
+import { countWords, tokenize } from '../src/text.js';
 import { runEval } from '../scripts/eval.js';
 import { fakeClaude, fakeEmbedder } from './helpers.js';
 
@@ -118,6 +118,18 @@ describe('search', () => {
   test('an off-topic question is not "confident"', async () => {
     const r = new Retriever(keywordIndex.chunks);
     assert.equal((await r.search('Who won the football world cup?')).confident, false);
+  });
+
+  test('French question words are ignored by keyword search', () => {
+    assert.deepEqual(tokenize("Quel est le prix du bitcoin aujourd'hui ?"), ['prix', 'bitcoin']);
+    assert.deepEqual(tokenize('Comment se transmet Ebola ?'), ['transmet', 'ebola']);
+  });
+
+  test('an off-topic French question is not "confident", even if a passage shares its question words', async () => {
+    const chunk = { id: 'fr-1', sourceId: 'test-fr', title: 'Ebola', section: '', language: 'fr', url: 'https://example.org',
+      text: "Quel est le risque aujourd'hui ? Aujourd'hui, le virus Ebola se transmet par contact direct." };
+    const r = new Retriever([chunk, ...keywordIndex.chunks]);
+    assert.equal((await r.search("Quel est le prix du bitcoin aujourd'hui ?")).confident, false);
   });
 
   test('if the embedding model fails at query time, search continues with keywords', async () => {

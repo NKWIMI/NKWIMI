@@ -6,6 +6,8 @@ a an and are as at be by can do does for from has have how i if in is it its me 
 their them there these they this to was we what when where which who why will with you your
 au aux avec ce ces dans de des du elle en est et il ils je la le les leur mais me mon ne nous on ou par pas
 pour qu que qui sa se ses son sur ta te tu un une vos votre vous y est-ce
+ai as avons avez ont sont etait etre ete fait faire peut peux doit dois quel quels quelle quelles comment combien
+quand pourquoi aujourd hui cette cet ma mes ta tes ton lui moi toi elles si tres plus aussi donc car comme depuis
 `.split(/\s+/).filter(Boolean));
 
 /** Lowercase and remove accents, so "fièvre" and "fievre" match. */
