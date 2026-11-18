@@ -37,7 +37,7 @@ An Android app that helps people in the DR Congo **check symptoms and exposure, 
 - **Measured results** on 40 test questions in 4 languages: right source in the top 5 for **100%**, ranked first for **94%**; all danger signs flagged with **no false alarms** ([details](https://github.com/NKWIMI/NKWIMI/tree/main/ebola-guard#results--how-well-the-assistant-finds-the-right-source))
 - **6 languages**: French, English, Swahili, **Lingala, Kikongo and Tshiluba**
 - **Outbreak map** (OpenStreetMap), lessons, myth-vs-fact quiz and trusted videos
-- 47 automated tests; backend deployed with **Docker** on Render; Android APK v1.2
+- 49 automated backend tests run on every push (**GitHub Actions**); backend deployed with **Docker** on Render; Android APK v1.2
 
 #### 🍅 [TomatoGrade](https://github.com/NKWIMI/tomatograde) — Tomato quality inspection with AI
 *Computer vision project · 2026*
