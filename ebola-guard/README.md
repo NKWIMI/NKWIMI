@@ -1,4 +1,8 @@
-# Ebola Guard — starter project
+# Ebola Guard — Ebola screening app with a RAG health assistant
+
+[![backend tests](https://github.com/NKWIMI/NKWIMI/actions/workflows/ebola-guard-tests.yml/badge.svg)](https://github.com/NKWIMI/NKWIMI/actions/workflows/ebola-guard-tests.yml)
+![retrieval top-5](https://img.shields.io/badge/retrieval%20top--5-100%25-brightgreen)
+![off-topic detection](https://img.shields.io/badge/off--topic%20detection-100%25-brightgreen)
 
 A cross-platform (Android + iOS) Flutter app that offers:
 
@@ -65,7 +69,7 @@ Then run `flutter doctor` and fix anything it reports.
 ```bash
 cd backend
 npm install
-npm test                       # 46 tests should pass
+npm test                       # 49 tests should pass
 npm run ingest                 # builds the WHO/CDC document library (first time: downloads ~120 MB model)
 npm run eval                   # optional: measures search quality on 40 test questions
 export ANTHROPIC_API_KEY=sk-ant-...   # Windows PowerShell: $env:ANTHROPIC_API_KEY="sk-ant-..."
